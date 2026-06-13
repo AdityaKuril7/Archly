@@ -9,7 +9,7 @@ export async function POST(req:NextRequest){
     try{
         await connectDb();
         const body = await req.json()
-        const validationResult = await signupValidation.safeParse(body)
+        const validationResult = signupValidation.safeParse(body)
 
         if(!validationResult.success){
             return ErrorHandler(validationResult.error.issues[0].message,400)
