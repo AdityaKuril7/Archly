@@ -1,7 +1,9 @@
 import {Label} from "@/components/ui/label";
 import {MenuIcon, PenBox, Search} from "lucide-react";
+import useUiStore from "@/store/useUiStore";
 
 export default function Navbar() {
+  const {toggleSidebar} = useUiStore()
 
   return (
 
@@ -9,7 +11,7 @@ export default function Navbar() {
       <div className={'flex gap-5'}>
 
         <div className={'flex items-center gap-4'}>
-          <MenuIcon/>
+          <MenuIcon onClick={toggleSidebar} />
           <Label className={'text-2xl font-black'}>Archly</Label>
         </div>
 

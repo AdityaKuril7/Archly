@@ -24,9 +24,10 @@ export default function Sidebar() {
   ]
   return(
     <motion.div
-      initial={{opacity:0}}
-      animate={{opacity:1}}
-      exit={{opacity:0}}
+      initial={{x:-200}}
+      animate={{x:0}}
+      exit={{x:-260}}
+      // transition={{duration:.5,ease:"easeInOut"}}
       className={'w-65 h-full border-r border-gray-300 p-8 '}>
       {sideBarOptions.map((option,index) => (
         <div key={index} className={'flex gap-4 w-full h-10 items-center text-gray-800 hover:text-black '}>
