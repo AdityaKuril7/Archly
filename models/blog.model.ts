@@ -25,7 +25,6 @@ const BlogModelSchema = new Schema<BlogTypes>({
     },
     image: {
         type: String,
-
     },
     category: {
         type: String,
