@@ -1,6 +1,7 @@
 import {Label} from "@/components/ui/label";
 import {MenuIcon, PenBox, Search} from "lucide-react";
 import useUiStore from "@/store/useUiStore";
+import Link from "next/link";
 
 export default function Navbar() {
   const {toggleSidebar} = useUiStore()
@@ -22,8 +23,10 @@ export default function Navbar() {
       </div>
       <div className={'h-full w-auto flex items-center gap-5'}>
         <div className={'flex gap-1 items-center'}>
-          <PenBox className={'text-gray-700 h-5'} />
-          <Label className={'text-sm'}>Write</Label>
+          <Link href={"/createpost"} className={'flex gap-1 items-center '}>
+            <PenBox className={'text-gray-700 h-5 cursor-pointer'} />
+            <Label className={'text-sm cursor-pointer'}>Write</Label>
+          </Link>
         </div>
 
         {/* Avatar */}

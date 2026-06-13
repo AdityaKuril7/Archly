@@ -17,8 +17,8 @@ export default function Home() {
 
           <div className={'w-240 h-full flex items-center justify-center'}>
             <div className={'w-200 h-full grid-cols-1 overflow-scroll py-10'}>
-              {[1,2,3,4,5].map((i)=>(
-                <BlogCard />
+              {[1,2,3,4,5].map((i,index)=>(
+                <BlogCard key={index} />
               ))}
             </div>
           </div>

@@ -132,3 +132,12 @@
 *::-webkit-scrollbar {
   @apply outline-none;
 }
+.ql-container {
+  border-end-end-radius: var(--radius);
+  border-end-start-radius: var(--radius);
+}
+
+.ql-toolbar {
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
