@@ -1,4 +1,4 @@
-export interface RegisterUserTypes {
+export interface SignupUserTypes {
     username: string;
     email: string;
     password: string;
