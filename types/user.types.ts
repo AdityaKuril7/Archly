@@ -1,4 +1,4 @@
-export interface RegisterUserSchema {
+export interface RegisterUserTypes {
     username: string;
     email: string;
     password: string;
@@ -15,7 +15,7 @@ export interface UserTypes {
     slug: string;
 }
 
-export interface LoginUserSchema {
+export interface LoginUserTypes {
     email: string;
     password: string;
 }

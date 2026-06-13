@@ -1,6 +1,7 @@
+import mongoose from "mongoose";
 
-interface BlogSchema {
-    author: string;
+export interface BlogTypes {
+    author: mongoose.Schema.Types.ObjectId;
     title: string;
     excerpt: string;
     image: string;
