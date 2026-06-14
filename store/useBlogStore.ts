@@ -6,7 +6,9 @@ interface BlogStore {
   blogs: IBlogSchema[] | null;
   fetchAllBlgos: () => void;
   toggleLike: (blogId: string, userId: string) => void;
-  addBlog: (data: AddBlogSchema) => void;
+  addBlog: (
+    data: AddBlogSchema,
+  ) => Promise<{ success: boolean; message: string }>;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
@@ -34,8 +36,18 @@ const useBlogStore = create<BlogStore>((set) => ({
     }
   },
   addBlog: async (data: AddBlogSchema) => {
-    const response = await api.post("/blogs/", data);
-    console.log(response);
+    try {
+      const response = await api.post("/blogs/", data);
+      if (response.status === 201) {
+        return { success: true, message: "Blog uploaded successfully" };
+      }
+      return { success: false, message: "Bad Request " };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { success: false, message: "Something went wrong" };
+      }
+      return { success: false, message: "Something went wrong" };
+    }
   },
 }));
 

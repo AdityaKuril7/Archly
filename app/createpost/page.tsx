@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { AddBlogSchema } from "@/types/blog.types";
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
+import { toast, Toaster } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CreatePostPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -19,13 +21,14 @@ const CreatePostPage = () => {
 
   const { user, fetchMe } = useAuthStore();
   const { addBlog } = useBlogStore();
+  const router = useRouter();
 
   useEffect(() => {
     fetchMe();
   }, []);
 
   const uploadToCloudinary = async (): Promise<string | null> => {
-    if (!imageFile) return imageUrl; 
+    if (!imageFile) return imageUrl;
 
     const formData = new FormData();
     formData.append("file", imageFile);
@@ -59,7 +62,14 @@ const CreatePostPage = () => {
         title,
       };
 
-    addBlog(newBlog);
+      const { success, message } = await addBlog(newBlog);
+      toast.info(message);
+
+      if (success) {
+        setInterval(() => {
+          router.push("/");
+        }, 1000);
+      }
     } catch (err) {
       console.error("Upload failed:", err);
     } finally {
@@ -69,6 +79,7 @@ const CreatePostPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Toaster />
       <div className="mx-auto max-w-4xl px-6 py-10">
         {/* Header */}
         <header className="mb-10 flex items-center justify-between border-b pb-6">

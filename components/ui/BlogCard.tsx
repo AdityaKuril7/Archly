@@ -66,13 +66,14 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
           {/* Footer */}
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-5 text-gray-500">
-              <div className="flex items-center gap-1">
+              <div onClick={handleLike} className="flex items-center gap-1 cursor-pointer">
                 <Hand
-                  onClick={handleLike}
                   className={liked ? "text-red-500" : "text-black"}
                   size={18}
                 />
-                <span>{likeCount}</span>
+                <span className={liked ? "text-red-500" : "text-black"}>
+                  {likeCount}
+                </span>
               </div>
 
               <div className="flex items-center gap-1">
