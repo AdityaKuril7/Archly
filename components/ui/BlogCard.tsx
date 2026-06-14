@@ -10,6 +10,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { use, useActionState, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const { toggleLike } = useBlogStore();
@@ -94,8 +95,8 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
 
         {/* Thumbnail */}
         <div className="w-60 h-40 shrink-0">
-          <img
-            src="https://images.unsplash.com/photo-1677442136019-21780ecad995"
+          <motion.img
+            src={blog?.image}
             alt="blog"
             className="w-full h-full object-cover rounded-lg"
           />

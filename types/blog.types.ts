@@ -36,3 +36,13 @@ export interface IBlogSchema {
   updatedAt: string;
   __v: number;
 }
+
+export interface AddBlogSchema {
+  author: string;
+  title: string;
+  excerpt: string;
+  image: string | null;
+  content: string;
+  category: string;
+  status: "draft" | "published";
+}

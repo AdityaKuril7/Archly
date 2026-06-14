@@ -19,7 +19,7 @@ export default function Home() {
     <div className={"h-screen w-screen flex flex-col overflow-hidden"}>
       <Navbar />
       <main className={"flex w-full h-full"}>
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {isSidebarOpen ? <Sidebar /> : <div className={"w-65"} />}
         </AnimatePresence>
 

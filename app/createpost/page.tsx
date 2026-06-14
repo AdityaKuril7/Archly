@@ -1,31 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Editor from "@/components/ui/Editor";
 import { Button } from "@/components/ui/button";
+import { AddBlogSchema } from "@/types/blog.types";
+import useAuthStore from "@/store/useAuthStore";
+import useBlogStore from "@/store/useBlogStore";
 
 const CreatePostPage = () => {
-  const [image, setImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleCoverImage = () => {
-    const input = document.createElement("input");
+  const { user, fetchMe } = useAuthStore();
+  const { addBlog } = useBlogStore();
 
-    input.type = "file";
-    input.accept = "image/*";
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
-    input.click();
+  const uploadToCloudinary = async (): Promise<string | null> => {
+    if (!imageFile) return imageUrl; 
 
-    input.onchange = () => {
-      const file = input.files?.[0];
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "zsp0yydw");
 
-      if (file) {
-        setImage(file);
-      }
-    };
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      { method: "POST", body: formData },
+    );
+
+    const data = await res.json();
+    return data.secure_url as string;
+  };
+
+  const handleUploadBlog = async (status: "draft" | "published") => {
+    if (!user) return;
+
+    try {
+      setIsUploading(true);
+
+      const uploadedImageUrl = await uploadToCloudinary();
+      setImageUrl(uploadedImageUrl);
+
+      const newBlog: AddBlogSchema = {
+        author: user._id!,
+        category,
+        content,
+        excerpt,
+        image: uploadedImageUrl,
+        status,
+        title,
+      };
+
+    addBlog(newBlog);
+    } catch (err) {
+      console.error("Upload failed:", err);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -41,41 +80,58 @@ const CreatePostPage = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="outline">
-              Save Draft
+            <Button
+              variant="outline"
+              disabled={isUploading}
+              onClick={() => handleUploadBlog("draft")}
+            >
+              {isUploading ? "Saving..." : "Save Draft"}
             </Button>
 
-            <Button>
-              Publish
+            <Button
+              disabled={isUploading}
+              onClick={() => handleUploadBlog("published")}
+            >
+              {isUploading ? "Publishing..." : "Publish"}
             </Button>
           </div>
         </header>
 
-        {/* Content */}
         <div className="space-y-8">
-          {/* Cover Image */}
           <div
-            onClick={handleCoverImage}
+            onClick={() => document.getElementById("cover-input")?.click()}
             className="group flex h-64 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border border-dashed bg-muted/20 transition-all hover:bg-muted/40"
           >
-            {image ? (
+            {imagePreview ? (
               <img
-                src={URL.createObjectURL(image)}
+                src={imagePreview}
                 alt="Cover Preview"
                 className="h-full w-full object-cover"
               />
             ) : (
               <div className="text-center">
-                <h2 className="text-lg font-semibold">
-                  Upload Cover Image
-                </h2>
-
+                <h2 className="text-lg font-semibold">Upload Cover Image</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Click here to select an image
                 </p>
               </div>
             )}
           </div>
+
+          <input
+            id="cover-input"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setImageFile(file);
+                setImagePreview(URL.createObjectURL(file));
+                setImageUrl(null);
+              }
+            }}
+          />
 
           {/* Title */}
           <input
@@ -97,10 +153,7 @@ const CreatePostPage = () => {
 
           {/* Category */}
           <div>
-            <label className="mb-2 block text-sm font-medium">
-              Category
-            </label>
-
+            <label className="mb-2 block text-sm font-medium">Category</label>
             <input
               type="text"
               placeholder="Technology"
@@ -111,10 +164,7 @@ const CreatePostPage = () => {
           </div>
 
           {/* Editor */}
-            <Editor
-              value={content}
-              onChange={setContent}
-            />
+          <Editor value={content} onChange={setContent} />
         </div>
       </div>
     </div>

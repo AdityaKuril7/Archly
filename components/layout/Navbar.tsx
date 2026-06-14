@@ -1,9 +1,10 @@
 import { Label } from "@/components/ui/label";
-import { MenuIcon, PenBox, Search } from "lucide-react";
+import { MenuIcon, PenBox, Search, UserIcon } from "lucide-react";
 import useUiStore from "@/store/useUiStore";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
@@ -20,7 +21,9 @@ export default function Navbar() {
     >
       <div className={"flex gap-5"}>
         <div className={"flex items-center gap-4"}>
-          <MenuIcon className="cursor-pointer" onClick={toggleSidebar} />
+          <motion.div whileHover={{ scale: 1.1,rotateZ:5 }}>
+            <MenuIcon className="cursor-pointer" onClick={toggleSidebar} />
+          </motion.div>
           <Label className={"text-2xl font-black"}>Archly</Label>
         </div>
 
@@ -38,21 +41,26 @@ export default function Navbar() {
         </div>
       </div>
       <div className={"h-full w-auto flex items-center gap-5"}>
-        <div className={"flex gap-1 items-center"}>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          className={"flex gap-1 items-center"}
+        >
           <Link href={"/createpost"} className={"flex gap-1 items-center "}>
             <PenBox className={"text-gray-700 h-5 cursor-pointer"} />
             <Label className={"text-sm cursor-pointer"}>Write</Label>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Avatar */}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.1 }}
           className={
-            "h-10 w-10 bg-yellow-200 rounded-full flex items-center justify-center"
+            "h-10 w-10 bg-black/20 rounded-full flex items-center justify-center cursor-pointer"
           }
         >
           <Label>{user?.username[0]}</Label>
-        </div>
+          {/* <UserIcon /> */}
+        </motion.div>
       </div>
     </nav>
   );

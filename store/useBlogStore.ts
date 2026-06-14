@@ -1,11 +1,12 @@
 import { api } from "@/lib/api";
-import { IBlogModel, IBlogSchema } from "@/types/blog.types";
+import { AddBlogSchema, IBlogModel, IBlogSchema } from "@/types/blog.types";
 import { create } from "zustand";
 
 interface BlogStore {
   blogs: IBlogSchema[] | null;
   fetchAllBlgos: () => void;
   toggleLike: (blogId: string, userId: string) => void;
+  addBlog: (data: AddBlogSchema) => void;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
@@ -31,6 +32,10 @@ const useBlogStore = create<BlogStore>((set) => ({
         console.log(error.message);
       }
     }
+  },
+  addBlog: async (data: AddBlogSchema) => {
+    const response = await api.post("/blogs/", data);
+    console.log(response);
   },
 }));
 
