@@ -8,16 +8,21 @@ import {
   Bookmark,
   MoreHorizontal,
   BadgeCheck,
+  BookmarkCheck,
 } from "lucide-react";
 import { use, useActionState, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
-  const { toggleLike } = useBlogStore();
+  const { toggleLike, toogleSave } = useBlogStore();
   const { user } = useAuthStore();
 
   const [liked, setIsLiked] = useState(
     blog.likes.includes(user?._id as string),
+  );
+
+  const [isSaved, setIsSaved] = useState(
+    user?.savedBlogs.includes(blog?._id as string),
   );
 
   const [likeCount, setLikeCount] = useState(blog.likes.length);
@@ -37,6 +42,11 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     setIsLiked(!liked);
 
     toggleLike(blog._id, user?._id as string);
+  };
+
+  const handleSave = () => {
+    toogleSave(blog._id, user?._id as string);
+    setIsSaved(!isSaved);
   };
 
   return (
@@ -66,7 +76,10 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
           {/* Footer */}
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-5 text-gray-500">
-              <div onClick={handleLike} className="flex items-center gap-1 cursor-pointer">
+              <div
+                onClick={handleLike}
+                className="flex items-center gap-1 cursor-pointer"
+              >
                 <Hand
                   className={liked ? "text-red-500" : "text-black"}
                   size={18}
@@ -87,8 +100,11 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-gray-500">
-              <Bookmark size={20} />
+            <div
+              onClick={handleSave}
+              className="flex items-center gap-4 text-gray-500"
+            >
+              {isSaved ? <BookmarkCheck /> : <Bookmark size={20} />}
               <MoreHorizontal size={20} />
             </div>
           </div>

@@ -9,7 +9,7 @@ export async function GET() {
 
     const blogs = await Blog.find({ status: "published" }).populate(
       "author",
-      "username email gender",
+      "username email gender savedBlogs",
     );
 
     if (blogs.length == 0) {

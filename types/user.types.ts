@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface ISignupUserSchema {
   username: string;
   email: string;
@@ -13,6 +15,7 @@ export interface IUserModel {
   gender: string;
   role: string;
   slug: string;
+  savedBlogs: mongoose.Types.ObjectId[];
 }
 
 export interface ILoggedUserSchema {
@@ -22,6 +25,7 @@ export interface ILoggedUserSchema {
   gender: string;
   createdAt: string;
   updatedAt: string;
+  savedBlogs: string[];
   __v: number;
 }
 

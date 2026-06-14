@@ -9,6 +9,8 @@ interface BlogStore {
   addBlog: (
     data: AddBlogSchema,
   ) => Promise<{ success: boolean; message: string }>;
+  toogleSave: (blogId: string, userId: string) => void;
+
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
@@ -47,6 +49,16 @@ const useBlogStore = create<BlogStore>((set) => ({
         return { success: false, message: "Something went wrong" };
       }
       return { success: false, message: "Something went wrong" };
+    }
+  },
+  toogleSave: async (blogId: string, userId: string) => {
+    try {
+      const response = await api.post("/blogs/save", { blogId, userId });
+      console.log(response);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
     }
   },
 }));

@@ -75,6 +75,8 @@ const useAuthStore = create<AuthStore>((set) => ({
   fetchMe: async () => {
     try {
       const response = await api.get("/auth/me");
+      console.log(response.data.user);
+
       if (response.status === 200) {
         set({ user: response.data.user });
       }

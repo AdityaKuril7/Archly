@@ -31,6 +31,10 @@ const userModelSchema = new Schema<IUserModel>(
     slug: {
       type: String,
     },
+    savedBlogs: {
+      type: [{ type: mongoose.Types.ObjectId, ref: "Blog" }],
+      default: [], // ensures every user document has this field
+    },
   },
   { timestamps: true },
 );
