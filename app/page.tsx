@@ -6,12 +6,14 @@ import { AnimatePresence } from "framer-motion";
 import BlogCard from "@/components/ui/BlogCard";
 import { useEffect } from "react";
 import useAuthStore from "@/store/useAuthStore";
+import useBlogStore from "@/store/useBlogStore";
 
 export default function Home() {
   const { isSidebarOpen } = useUiStore();
-  const { fetchMe } = useAuthStore();
+  const { fetchAllBlgos, blogs } = useBlogStore();
+
   useEffect(() => {
-    fetchMe();
+    fetchAllBlgos();
   }, []);
   return (
     <div className={"h-screen w-screen flex flex-col overflow-hidden"}>
@@ -23,8 +25,8 @@ export default function Home() {
 
         <div className={"w-240 h-full flex items-center justify-center"}>
           <div className={"w-200 h-full grid-cols-1 overflow-scroll py-10"}>
-            {[1, 2, 3, 4, 5].map((i, index) => (
-              <BlogCard key={index} />
+            {blogs?.map((blog, index) => (
+              <BlogCard key={index} blog={blog} />
             ))}
           </div>
         </div>

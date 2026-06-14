@@ -1,10 +1,10 @@
-export interface SignupUserTypes {
+export interface ISignupUserSchema {
   username: string;
   email: string;
   password: string;
 }
 
-export interface UserTypes {
+export interface IUserModel {
   username: string;
   email: string;
   password: string;
@@ -15,7 +15,7 @@ export interface UserTypes {
   slug: string;
 }
 
-export interface LoggedUser {
+export interface ILoggedUserSchema {
   _id: string;
   username: string;
   email: string;
@@ -25,7 +25,7 @@ export interface LoggedUser {
   __v: number;
 }
 
-export interface LoginUserTypes {
+export interface ILoginSchema {
   email: string;
   password: string;
 }

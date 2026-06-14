@@ -3,10 +3,14 @@ import { MenuIcon, PenBox, Search } from "lucide-react";
 import useUiStore from "@/store/useUiStore";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
-  const { user } = useAuthStore();
+  const { user, fetchMe } = useAuthStore();
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   return (
     <nav
@@ -16,13 +20,13 @@ export default function Navbar() {
     >
       <div className={"flex gap-5"}>
         <div className={"flex items-center gap-4"}>
-          <MenuIcon onClick={toggleSidebar} />
+          <MenuIcon className="cursor-pointer" onClick={toggleSidebar} />
           <Label className={"text-2xl font-black"}>Archly</Label>
         </div>
 
         <div
           className={
-            "w-70 bg-gray-100/80 flex items-center p-3 gap-3 rounded-full"
+            "w-70 bg-gray-100/80 flex  items-center p-3 gap-3 rounded-full"
           }
         >
           <Search />

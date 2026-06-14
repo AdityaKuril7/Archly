@@ -1,3 +1,6 @@
+import useAuthStore from "@/store/useAuthStore";
+import useBlogStore from "@/store/useBlogStore";
+import { IBlogSchema } from "@/types/blog.types";
 import {
   Hand,
   MessageCircle,
@@ -6,8 +9,35 @@ import {
   MoreHorizontal,
   BadgeCheck,
 } from "lucide-react";
+import { use, useActionState, useEffect, useState } from "react";
 
-export default function BlogCard() {
+export default function BlogCard({ blog }: { blog: IBlogSchema }) {
+  const { toggleLike } = useBlogStore();
+  const { user } = useAuthStore();
+
+  const [liked, setIsLiked] = useState(
+    blog.likes.includes(user?._id as string),
+  );
+
+  const [likeCount, setLikeCount] = useState(blog.likes.length);
+
+  useEffect(() => {
+    setLikeCount(blog.likes.length);
+    setIsLiked(blog.likes.includes(user?._id as string));
+  }, [blog.likes, user?._id]);
+
+  const handleLike = () => {
+    if (liked) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
+
+    setIsLiked(!liked);
+
+    toggleLike(blog._id, user?._id as string);
+  };
+
   return (
     <div className="border-b pb-8 mb-8">
       <div className="flex gap-6">
@@ -15,30 +45,33 @@ export default function BlogCard() {
         <div className="flex-1">
           {/* Author */}
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-            <span className="font-medium">Anand Gaur</span>
+            <span className="font-medium">{blog?.author.username}</span>
 
             <BadgeCheck size={16} className="text-blue-500 fill-blue-500" />
 
-            <span>May 31</span>
+            <span>{new Date(blog?.createdAt).toLocaleDateString()}</span>
           </div>
 
           {/* Title */}
           <h2 className="text-4xl font-bold leading-tight mb-4">
-            AI for iOS Developers: The Complete Roadmap
+            {blog?.title}
           </h2>
 
           {/* Description */}
           <p className="text-gray-600 text-xl leading-relaxed line-clamp-2">
-            How to use AI to build iOS apps faster, and how to build AI
-            features into your apps. Explained step by step.
+            {blog?.excerpt}
           </p>
 
           {/* Footer */}
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-5 text-gray-500">
               <div className="flex items-center gap-1">
-                <Hand size={18} />
-                <span>59</span>
+                <Hand
+                  onClick={handleLike}
+                  className={liked ? "text-red-500" : "text-black"}
+                  size={18}
+                />
+                <span>{likeCount}</span>
               </div>
 
               <div className="flex items-center gap-1">

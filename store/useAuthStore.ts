@@ -1,27 +1,25 @@
 import { create } from "zustand";
 import {
-  LoggedUser,
-  LoginUserTypes,
-  SignupUserTypes,
+  ILoggedUserSchema,
+  ILoginSchema,
+  ISignupUserSchema,
 } from "@/types/user.types";
 import { api } from "@/lib/api";
 
 interface AuthStore {
   loading: boolean;
-  user: LoggedUser | null;
+  user: ILoggedUserSchema | null;
   signup: (
-    data: SignupUserTypes,
+    data: ISignupUserSchema,
   ) => Promise<{ success: boolean; message: string }>;
-  login: (
-    data: LoginUserTypes,
-  ) => Promise<{ success: boolean; message: string }>;
+  login: (data: ILoginSchema) => Promise<{ success: boolean; message: string }>;
   fetchMe: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
   loading: false,
   user: null,
-  signup: async (data: SignupUserTypes) => {
+  signup: async (data: ISignupUserSchema) => {
     try {
       set({ loading: true });
       const response = await api.post("/auth/signup", data);
@@ -46,7 +44,7 @@ const useAuthStore = create<AuthStore>((set) => ({
       };
     }
   },
-  login: async (data: LoginUserTypes) => {
+  login: async (data: ILoginSchema) => {
     try {
       set({ loading: true });
 
