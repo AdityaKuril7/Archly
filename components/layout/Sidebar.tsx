@@ -46,12 +46,12 @@ export default function Sidebar() {
   ];
   return (
     <motion.div
-      initial={{ x: -200 }}
+      initial={{ x: -260 }}
       animate={{ x: 0 }}
       exit={{ x: -260 }}
-      // transition={{duration:.5,ease:"easeInOut"}}
+      transition={{duration:.5,ease:"easeInOut"}}
       className={
-        "w-65 h-full border-r border-gray-300 p-8 flex flex-col gap-5 "
+        "w-65 h-full border-r self-start border-gray-300 p-8 flex flex-col gap-5 "
       }
     >
       {sideBarOptions.map((option, index) => (

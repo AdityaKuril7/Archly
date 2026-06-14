@@ -30,7 +30,8 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   useEffect(() => {
     setLikeCount(blog.likes.length);
     setIsLiked(blog.likes.includes(user?._id as string));
-  }, [blog.likes, user?._id]);
+    setIsSaved(user?.savedBlogs.includes(blog?._id as string));
+  }, [blog.likes, user?._id, user?.savedBlogs]);
 
   const handleLike = () => {
     if (liked) {
