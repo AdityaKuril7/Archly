@@ -3,6 +3,7 @@ import {
   HomeIcon,
   LayoutDashboardIcon,
   LibraryIcon,
+  LogOut,
   PenBox,
   UserIcon,
 } from "lucide-react";
@@ -37,6 +38,11 @@ export default function Sidebar() {
       icon: <LayoutDashboardIcon />,
       link: "#",
     },
+    {
+      title: "Logout",
+      icon: <LogOut />,
+      link: "/auth",
+    },
   ];
   return (
     <motion.div
@@ -49,7 +55,7 @@ export default function Sidebar() {
       }
     >
       {sideBarOptions.map((option, index) => (
-        <motion.div whileHover={{scale:1.1,translateX:40}}>
+        <motion.div whileHover={{ scale: 1.1, translateX: 10 }}>
           <Link
             href={option.link}
             key={index}
