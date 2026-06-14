@@ -111,7 +111,7 @@ const CreatePostPage = () => {
         <div className="space-y-8">
           <div
             onClick={() => document.getElementById("cover-input")?.click()}
-            className="group flex h-64 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border border-dashed bg-muted/20 transition-all hover:bg-muted/40"
+            className={`group flex h-auto ${!imagePreview && "p-10"} cursor-pointer items-center justify-center overflow-hidden rounded-2xl border border-dashed bg-muted/20 transition-all hover:bg-muted/40`}
           >
             {imagePreview ? (
               <img

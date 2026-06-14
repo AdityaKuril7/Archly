@@ -7,10 +7,9 @@ export async function GET() {
   try {
     await connectDb();
 
-    const blogs = await Blog.find({ status: "published" }).populate(
-      "author",
-      "username email gender savedBlogs",
-    );
+    const blogs = await Blog.find({ status: "published" })
+      .populate("author", "username email gender savedBlogs")
+      .sort({ createdAt: -1 });
 
     if (blogs.length == 0) {
       return ErrorHandler("No blogs found", 200);

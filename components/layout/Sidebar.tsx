@@ -55,7 +55,7 @@ export default function Sidebar() {
       }
     >
       {sideBarOptions.map((option, index) => (
-        <motion.div whileHover={{ scale: 1.1, translateX: 10 }}>
+        <motion.div key={index} whileHover={{ scale: 1.1, translateX: 10 }}>
           <Link
             href={option.link}
             key={index}

@@ -61,7 +61,15 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
 
             <BadgeCheck size={16} className="text-blue-500 fill-blue-500" />
 
-            <span>{new Date(blog?.createdAt).toLocaleDateString()}</span>
+            <span>
+              {new Date(blog?.createdAt).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+              })}
+            </span>
           </div>
 
           {/* Title */}
