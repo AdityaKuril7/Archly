@@ -4,18 +4,18 @@ import { create } from "zustand";
 
 interface BlogStore {
   blogs: IBlogSchema[] | null;
-  fetchAllBlgos: () => void;
+  fetchAllBlogs: () => void;
   toggleLike: (blogId: string, userId: string) => void;
   addBlog: (
     data: AddBlogSchema,
   ) => Promise<{ success: boolean; message: string }>;
   toogleSave: (blogId: string, userId: string) => void;
-
+  searchBlogs: (query: string) => void;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
   blogs: null,
-  fetchAllBlgos: async () => {
+  fetchAllBlogs: async () => {
     try {
       const response = await api.get("/blogs/");
       if (response.status === 200) {
@@ -58,6 +58,19 @@ const useBlogStore = create<BlogStore>((set) => ({
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
+      }
+    }
+  },
+  searchBlogs: async (query: string) => {
+    try {
+      const response = await api.get(`/blogs/search?q=${query}`);
+      if (response.status === 200) {
+        console.log(response.data.blogs);
+        set({ blogs: response.data.blogs });
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(e.message);
       }
     }
   },

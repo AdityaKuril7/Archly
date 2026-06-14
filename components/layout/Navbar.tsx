@@ -3,15 +3,32 @@ import { MenuIcon, PenBox, Search, UserIcon } from "lucide-react";
 import useUiStore from "@/store/useUiStore";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import useBlogStore from "@/store/useBlogStore";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
   const { user, fetchMe } = useAuthStore();
+  const { searchBlogs, fetchAllBlogs } = useBlogStore();
+  const [search, setSearch] = useState<string>("");
   useEffect(() => {
     fetchMe();
   }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      searchBlogs(search);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    if (value === "") {
+      fetchAllBlogs();
+    }
+  };
 
   return (
     <nav
@@ -21,7 +38,7 @@ export default function Navbar() {
     >
       <div className={"flex gap-5"}>
         <div className={"flex items-center gap-4"}>
-          <motion.div whileHover={{ scale: 1.1,rotateZ:5 }}>
+          <motion.div whileHover={{ scale: 1.1, rotateZ: 5 }}>
             <MenuIcon className="cursor-pointer" onClick={toggleSidebar} />
           </motion.div>
           <Label className={"text-2xl font-black"}>Archly</Label>
@@ -34,6 +51,9 @@ export default function Navbar() {
         >
           <Search />
           <input
+            value={search}
+            onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e)}
             type="text"
             placeholder={"search"}
             className={"w-full h-full focus:outline-none"}

@@ -10,10 +10,10 @@ import useBlogStore from "@/store/useBlogStore";
 
 export default function Home() {
   const { isSidebarOpen } = useUiStore();
-  const { fetchAllBlgos, blogs } = useBlogStore();
+  const { fetchAllBlogs, blogs } = useBlogStore();
 
   useEffect(() => {
-    fetchAllBlgos();
+    fetchAllBlogs();
   }, []);
   return (
     <div className={"h-screen w-screen flex flex-col overflow-hidden"}>
