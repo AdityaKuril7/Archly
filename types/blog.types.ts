@@ -11,4 +11,5 @@ export interface BlogTypes {
     createdAt: Date;
     updatedAt: Date;
     status: string;
+    likes: mongoose.Schema.Types.ObjectId[]
 }

@@ -33,7 +33,11 @@ const BlogModelSchema = new Schema<BlogTypes>({
     status: {
         type: String,
         enum: ["draft", "published"],
-    }
+    },
+    likes: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+    }]
 }, {timestamps: true});
 
 const Blog = mongoose.models.Blog || mongoose.model("Blog", BlogModelSchema);
