@@ -1,9 +1,14 @@
 import { create } from "zustand";
-import { LoginUserTypes, SignupUserTypes } from "@/types/user.types";
+import {
+  LoggedUser,
+  LoginUserTypes,
+  SignupUserTypes,
+} from "@/types/user.types";
 import { api } from "@/lib/api";
 
 interface AuthStore {
   loading: boolean;
+  user: LoggedUser | null;
   signup: (
     data: SignupUserTypes,
   ) => Promise<{ success: boolean; message: string }>;
@@ -15,6 +20,7 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>((set) => ({
   loading: false,
+  user: null,
   signup: async (data: SignupUserTypes) => {
     try {
       set({ loading: true });
@@ -46,7 +52,6 @@ const useAuthStore = create<AuthStore>((set) => ({
 
       const response = await api.post("/auth/login/", data);
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.data.token);
         set({ loading: false });
 
         return {
@@ -69,9 +74,17 @@ const useAuthStore = create<AuthStore>((set) => ({
       };
     }
   },
-  fetchMe: () => {
+  fetchMe: async () => {
     try {
-    } catch (err) {}
+      const response = await api.get("/auth/me");
+      if (response.status === 200) {
+        set({ user: response.data.user });
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err.message);
+      }
+    }
   },
 }));
 
