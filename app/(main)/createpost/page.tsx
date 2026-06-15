@@ -8,6 +8,10 @@ import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
+import { AnimatePresence } from "framer-motion";
+import useUiStore from "@/store/useUiStore";
+import Sidebar from "@/components/layout/Sidebar";
+import { motion } from "framer-motion";
 
 const CreatePostPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -21,6 +25,7 @@ const CreatePostPage = () => {
 
   const { user, fetchMe } = useAuthStore();
   const { addBlog } = useBlogStore();
+  const { isSidebarOpen } = useUiStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -78,9 +83,9 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-240 justify-self-center">
       <Toaster />
-      <div className="mx-auto max-w-4xl px-6 py-10">
+      <motion.div className="mx-auto max-w-4xl px-6 pt-10 pb-30 overflow-scroll h-screen">
         {/* Header */}
         <header className="mb-10 flex items-center justify-between border-b pb-6">
           <div>
@@ -177,7 +182,7 @@ const CreatePostPage = () => {
           {/* Editor */}
           <Editor value={content} onChange={setContent} />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
