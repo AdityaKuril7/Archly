@@ -1,3 +1,4 @@
+"use client"
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
 import { IBlogSchema } from "@/types/blog.types";

@@ -36,7 +36,7 @@ export default function Sidebar() {
     {
       title: "Dashboard",
       icon: <LayoutDashboardIcon />,
-      link: "#",
+      link: "/dashboard",
     },
     {
       title: "Logout",
