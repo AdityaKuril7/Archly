@@ -8,91 +8,88 @@ import {
   Bookmark,
   MoreHorizontal,
   BadgeCheck,
-  BookmarkCheck,
+  BookmarkCheck, BookmarkOff,
 } from "lucide-react";
-import { use, useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const { toggleLike, toogleSave } = useBlogStore();
   const { user } = useAuthStore();
 
-  const [liked, setIsLiked] = useState(
-    blog.likes.includes(user?._id as string),
-  );
-
-  const [isSaved, setIsSaved] = useState(
-    user?.savedBlogs.includes(blog?._id as string),
-  );
-
+  const [liked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
   const [likeCount, setLikeCount] = useState(blog.likes.length);
 
   useEffect(() => {
     setLikeCount(blog.likes.length);
-    setIsLiked(blog.likes.includes(user?._id as string));
-    setIsSaved(user?.savedBlogs.includes(blog?._id as string));
-  }, [blog.likes, user?._id, user?.savedBlogs]);
+
+    setIsLiked(
+      blog.likes.some((id) => id.toString() === user?._id?.toString()),
+    );
+  }, [blog.likes, blog._id, user?._id, user?.savedBlogs]);
+
+  useEffect(() => {
+    setIsSaved(
+      user?.savedBlogs?.some(
+        (_id) => _id.toString() === blog._id?.toString(),
+      ) ?? false,
+    );
+  }, [user?.savedBlogs, blog._id]);
 
   const handleLike = () => {
-    if (liked) {
-      setLikeCount((prev) => prev - 1);
-    } else {
-      setLikeCount((prev) => prev + 1);
-    }
+    if (!user?._id) return;
 
-    setIsLiked(!liked);
+    setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
+    setIsLiked((prev) => !prev);
 
-    toggleLike(blog._id, user?._id as string);
+    toggleLike(blog._id, user._id);
   };
 
   const handleSave = () => {
+    setIsSaved((prev) => !prev); // optimistic toggle
     toogleSave(blog._id, user?._id as string);
-    setIsSaved(!isSaved);
   };
 
   return (
-    <div className="border-b pb-8 mb-8">
+    <div className="mb-8 border-b pb-8">
       <div className="flex gap-6">
-        {/* Content */}
         <div className="flex-1">
-          {/* Author */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-            <span className="font-medium">{blog?.author.username}</span>
+          <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
+            <span className="font-medium">{blog.author.username}</span>
 
-            <BadgeCheck size={16} className="text-blue-500 fill-blue-500" />
+            <BadgeCheck size={16} className="fill-blue-500 text-blue-500" />
 
             <span>
-              {new Date(blog?.createdAt).toLocaleDateString("en-IN", {
+              {new Date(blog.createdAt).toLocaleDateString("en-IN", {
                 day: "2-digit",
                 month: "short",
                 year: "2-digit",
                 hour: "2-digit",
-                minute: "2-digit"
+                minute: "2-digit",
               })}
             </span>
           </div>
 
-          {/* Title */}
-          <h2 className="text-4xl font-bold leading-tight mb-4">
-            {blog?.title}
+          <h2 className="mb-4 text-4xl font-bold leading-tight">
+            {blog.title}
           </h2>
 
-          {/* Description */}
-          <p className="text-gray-600 text-xl leading-relaxed line-clamp-2">
-            {blog?.excerpt}
+          <p className="line-clamp-2 text-xl leading-relaxed text-gray-600">
+            {blog.excerpt}
           </p>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-6">
+          <div className="mt-6 flex items-center justify-between">
             <div className="flex items-center gap-5 text-gray-500">
               <div
                 onClick={handleLike}
-                className="flex items-center gap-1 cursor-pointer"
+                className="flex cursor-pointer items-center gap-1"
               >
                 <Hand
-                  className={liked ? "text-red-500" : "text-black"}
                   size={18}
+                  className={liked ? "text-red-500" : "text-black"}
                 />
+
                 <span className={liked ? "text-red-500" : "text-black"}>
                   {likeCount}
                 </span>
@@ -113,18 +110,18 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               onClick={handleSave}
               className="flex items-center gap-4 text-gray-500"
             >
-              {isSaved ? <BookmarkCheck /> : <Bookmark size={20} />}
+              {isSaved ? <Bookmark className={'fill-black text-black'} size={20} /> : <Bookmark size={20} />}
+
               <MoreHorizontal size={20} />
             </div>
           </div>
         </div>
 
-        {/* Thumbnail */}
-        <div className="w-60 h-40 shrink-0">
+        <div className="h-40 w-60 shrink-0">
           <motion.img
-            src={blog?.image}
+            src={blog.image}
             alt="blog"
-            className="w-full h-full object-cover rounded-lg"
+            className="h-full w-full rounded-lg object-cover"
           />
         </div>
       </div>

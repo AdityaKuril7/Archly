@@ -26,12 +26,12 @@ export default function Sidebar() {
     {
       title: "Library",
       icon: <LibraryIcon />,
-      link: "#",
+      link: "/library",
     },
     {
       title: "Profile",
       icon: <UserIcon />,
-      link: "#",
+      link: "/user-profile",
     },
     {
       title: "Dashboard",
@@ -49,7 +49,7 @@ export default function Sidebar() {
       initial={{ x: -260 }}
       animate={{ x: 0 }}
       exit={{ x: -260 }}
-      transition={{duration:.5,ease:"easeInOut"}}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       className={
         "w-65 h-full border-r self-start border-gray-300 p-8 flex flex-col gap-5 "
       }

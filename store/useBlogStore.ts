@@ -1,9 +1,12 @@
 import { api } from "@/lib/api";
 import { AddBlogSchema, IBlogModel, IBlogSchema } from "@/types/blog.types";
 import { create } from "zustand";
+import useAuthStore from "./useAuthStore";
 
 interface BlogStore {
   blogs: IBlogSchema[] | null;
+  savedBlogs: IBlogSchema[] | null;
+  userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
   toggleLike: (blogId: string, userId: string) => void;
   addBlog: (
@@ -11,10 +14,14 @@ interface BlogStore {
   ) => Promise<{ success: boolean; message: string }>;
   toogleSave: (blogId: string, userId: string) => void;
   searchBlogs: (query: string) => void;
+  fetchLibrary: (userId: string) => void;
+  fetchUsersBlogs: (userId:string) => void;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
   blogs: null,
+  userBlogs: null,
+  savedBlogs: null,
   fetchAllBlogs: async () => {
     try {
       const response = await api.get("/blogs/");
@@ -54,7 +61,11 @@ const useBlogStore = create<BlogStore>((set) => ({
   toogleSave: async (blogId: string, userId: string) => {
     try {
       const response = await api.post("/blogs/save", { blogId, userId });
-      console.log(response);
+      if (response.status === 200) {
+        // Update user.savedBlogs in authStore
+        const { user, fetchMe } = useAuthStore.getState();
+        await fetchMe(); // re-fetch user so savedBlogs is fresh
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -74,6 +85,30 @@ const useBlogStore = create<BlogStore>((set) => ({
       }
     }
   },
+  fetchLibrary: async (userId: string) => {
+    try {
+      const response = await api.post("/blogs/user-saves", { userId });
+      if (response.status === 200) {
+        set({ savedBlogs: response.data.blogs });
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(e.message);
+      }
+    }
+  },
+  fetchUsersBlogs: async (userId:string) =>{
+    try{
+     const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${userId}?status=published`)
+      if(response.status === 200){
+        set({userBlogs: response.data.blogs})
+      }
+
+    }catch(e){
+      if(e instanceof Error)
+        console.log(e.message)
+    }
+  }
 }));
 
 export default useBlogStore;

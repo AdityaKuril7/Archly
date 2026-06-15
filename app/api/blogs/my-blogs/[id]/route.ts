@@ -14,12 +14,12 @@ export async function GET(req: NextRequest, {params}: { params: Promise<{ id: st
         const {searchParams} = new URL(req.url);
         const status = await searchParams.get("status");
 
-        const blogs = await Blog.find({author: new mongoose.Types.ObjectId(id),status: status ? status : "published"});
+        const blogs = await Blog.find({author: new mongoose.Types.ObjectId(id),status: status ? status : "published"}).populate("author", "username");
 
         return NextResponse.json({
             success: true,
             messsage: "Blogs found",
-            data: blogs
+            blogs
 
         }, {status: 200})
 

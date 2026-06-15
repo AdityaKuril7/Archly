@@ -14,6 +14,7 @@ interface AuthStore {
   ) => Promise<{ success: boolean; message: string }>;
   login: (data: ILoginSchema) => Promise<{ success: boolean; message: string }>;
   fetchMe: () => void;
+  getUserId: () => string | null;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
@@ -79,12 +80,20 @@ const useAuthStore = create<AuthStore>((set) => ({
 
       if (response.status === 200) {
         set({ user: response.data.user });
+        console.log(response.data.user);
+
+        // localStorage.setItem("userId", response.data.user._id as string);
+        localStorage.setItem("userId", response.data.user?._id);
       }
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
       }
     }
+  },
+  getUserId: () => {
+    const userId = localStorage.getItem("userId");
+    return userId;
   },
 }));
 

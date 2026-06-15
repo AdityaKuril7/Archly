@@ -6,15 +6,20 @@ import useAuthStore from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import useBlogStore from "@/store/useBlogStore";
+import {usePathname} from "next/navigation";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
   const { user, fetchMe } = useAuthStore();
   const { searchBlogs, fetchAllBlogs } = useBlogStore();
   const [search, setSearch] = useState<string>("");
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
+
   useEffect(() => {
     fetchMe();
   }, []);
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -43,22 +48,24 @@ export default function Navbar() {
           </motion.div>
           <Label className={"text-2xl font-black"}>Archly</Label>
         </div>
+        {isHomepage &&
+            <div
+                className={
+                  "w-70 bg-gray-100/80 flex  items-center p-3 gap-3 rounded-full"
+                }
+            >
+                <Search />
+                <input
+                    value={search}
+                    onChange={handleChange}
+                    onKeyDown={(e) => handleKeyDown(e)}
+                    type="text"
+                    placeholder={"search"}
+                    className={"w-full h-full focus:outline-none"}
+                />
+            </div>
+        }
 
-        <div
-          className={
-            "w-70 bg-gray-100/80 flex  items-center p-3 gap-3 rounded-full"
-          }
-        >
-          <Search />
-          <input
-            value={search}
-            onChange={handleChange}
-            onKeyDown={(e) => handleKeyDown(e)}
-            type="text"
-            placeholder={"search"}
-            className={"w-full h-full focus:outline-none"}
-          />
-        </div>
       </div>
       <div className={"h-full w-auto flex items-center gap-5"}>
         <motion.div
