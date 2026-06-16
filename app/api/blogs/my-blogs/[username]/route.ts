@@ -21,7 +21,13 @@ export async function GET(req: NextRequest, {params}: { params: Promise<{ userna
 
         if(!user) return ErrorHandler("User not found",404)
 
-        const blogs = await Blog.find({author: new mongoose.Types.ObjectId(user._id),status: status ? status : "published"}).populate("author", "username");
+        let blogs;
+        if(status){
+            blogs = await Blog.find({author: new mongoose.Types.ObjectId(user._id),status: status ? status : "published"}).populate("author", "username");
+        }else{
+            blogs = await Blog.find({author: new mongoose.Types.ObjectId(user._id)}).populate("author", "username");
+        }
+
 
         return NextResponse.json({
             success: true,

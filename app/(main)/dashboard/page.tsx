@@ -5,6 +5,7 @@ import {useDashboardStore} from "@/store/useDashboardStore";
 import useAuthStore from "@/store/useAuthStore";
 import {useEffect} from "react";
 import TableRow from "@/components/ui/TableRow";
+import {Toaster} from "sonner";
 
 const InfoCard = ({
   value,
@@ -21,7 +22,7 @@ const InfoCard = ({
 
 const Dashboard = () => {
 
-  const {getUserId} = useAuthStore()
+  const {getUsername} = useAuthStore()
   const {blogs,fetchDashboardBlogs} = useDashboardStore()
 
   const totalLikes = blogs?.reduce(
@@ -30,14 +31,14 @@ const Dashboard = () => {
   );
 
   useEffect(()=>{
-    const userId = getUserId()
-    if(!userId) return console.log("Missing userId")
-    fetchDashboardBlogs(userId)
+    const username = getUsername();
+    fetchDashboardBlogs(username || "")
   },[])
 
 
   return (
     <div className="justify-self-center w-240 flex flex-col items-center ">
+      <Toaster />
       <div className="w-full h-auto grid grid-cols-3 place-items-center gap-8 p-4">
         <InfoCard value={blogs?.length.toString() || "0"} description="Total blgos" />
         <InfoCard value={totalLikes?.toString() || "0"} description="Total Likes" />

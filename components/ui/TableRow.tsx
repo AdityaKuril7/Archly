@@ -18,7 +18,7 @@ export default function TableRow({title, status, likes, views}: TableRowProps) {
         </p>
       </td>
 
-      <td className="px-6 py-4 text-green-600 text-right font-medium">
+      <td className={`px-6 py-4 ${status == "published" ? "text-green-600" : "text-red-600"} text-right font-medium`}>
         {status.toUpperCase()}
       </td>
 
