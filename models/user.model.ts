@@ -35,6 +35,14 @@ const userModelSchema = new Schema<IUserModel>(
       type: [{ type: mongoose.Types.ObjectId, ref: "Blog" }],
       default: [], // ensures every user document has this field
     },
+    following: {
+      type: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+      default: [], // ensures every user document has this field
+    },
+    followers: {
+      type: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+      default: [], // ensures every user document has this field
+    },
   },
   { timestamps: true },
 );

@@ -16,6 +16,8 @@ export interface IUserModel {
   role: string;
   slug: string;
   savedBlogs: mongoose.Types.ObjectId[];
+  followers: mongoose.Types.ObjectId[];
+  following: mongoose.Types.ObjectId[];
 }
 
 export interface ILoggedUserSchema {
