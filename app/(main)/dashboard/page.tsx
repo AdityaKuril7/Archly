@@ -10,18 +10,24 @@ const InfoCard = ({
   value,
   description,
 }: {
-  value: string;
+  value: string | null;
   description: string;
 }) => (
   <Card className="h-50 w-70 flex items-center justify-center">
     <Label className="text-2xl">{description}</Label>
-    <Label className="text-3xl">{value}</Label>
+    <Label className="text-3xl">{value || 0} </Label>
   </Card>
 );
 
 const Dashboard = () => {
+
   const {getUserId} = useAuthStore()
   const {blogs,fetchDashboardBlogs} = useDashboardStore()
+
+  const totalLikes = blogs?.reduce(
+    (total, blog) => total + blog.likes.length,
+    0
+  );
 
   useEffect(()=>{
     const userId = getUserId()
@@ -33,8 +39,8 @@ const Dashboard = () => {
   return (
     <div className="justify-self-center w-240 flex flex-col items-center ">
       <div className="w-full h-auto grid grid-cols-3 place-items-center gap-8 p-4">
-        <InfoCard value="5" description="Total blgos" />
-        <InfoCard value="12" description="Total Likes" />
+        <InfoCard value={blogs?.length.toString() || "0"} description="Total blgos" />
+        <InfoCard value={totalLikes?.toString() || "0"} description="Total Likes" />
         <InfoCard value="5" description="Followers" />
       </div>
       <div className="flex w-full mt-10 justify-center">
