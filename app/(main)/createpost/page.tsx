@@ -33,6 +33,7 @@ const CreatePostPage = () => {
   }, []);
 
   const uploadToCloudinary = async (): Promise<string | null> => {
+
     if (!imageFile) return imageUrl;
 
     const formData = new FormData();
@@ -53,6 +54,21 @@ const CreatePostPage = () => {
 
     try {
       setIsUploading(true);
+
+      const fields = {
+        title,
+        excerpt,
+        content,
+        category,
+      };
+
+      const missingField = Object.entries(fields).find(
+        ([_, value]) => !value
+      );
+
+      if (missingField) {
+        return toast.info(`${missingField[0]} is missing`);
+      }
 
       const uploadedImageUrl = await uploadToCloudinary();
       setImageUrl(uploadedImageUrl);
