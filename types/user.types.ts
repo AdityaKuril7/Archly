@@ -28,6 +28,8 @@ export interface ILoggedUserSchema {
   createdAt: string;
   updatedAt: string;
   savedBlogs: string[];
+  followers: string[];
+  following: string[];
   __v: number;
 }
 
