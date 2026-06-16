@@ -95,6 +95,7 @@ const useAuthStore = create<AuthStore>((set) => ({
     const userId = localStorage.getItem("userId");
     return userId;
   },
+
 }));
 
 export default useAuthStore;

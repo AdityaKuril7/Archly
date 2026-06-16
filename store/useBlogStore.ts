@@ -97,9 +97,9 @@ const useBlogStore = create<BlogStore>((set) => ({
       }
     }
   },
-  fetchUsersBlogs: async (userId:string) =>{
+  fetchUsersBlogs: async (username:string) =>{
     try{
-     const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${userId}?status=published`)
+     const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${username}?status=published`)
       if(response.status === 200){
         set({userBlogs: response.data.blogs})
       }

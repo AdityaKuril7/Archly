@@ -79,15 +79,17 @@ export default function Navbar() {
         </motion.div>
 
         {/* Avatar */}
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className={
-            "h-10 w-10 bg-black/20 rounded-full flex items-center justify-center cursor-pointer"
-          }
-        >
-          <Label>{user?.username[0]}</Label>
-          {/* <UserIcon /> */}
-        </motion.div>
+        <Link href={`/user-profile/${user?.username}`}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className={
+              "h-10 w-10 bg-black/20 rounded-full flex items-center justify-center cursor-pointer"
+            }
+          >
+            <Label>{user?.username[0]}</Label>
+            {/* <UserIcon /> */}
+          </motion.div>
+        </Link>
       </div>
     </nav>
   );

@@ -10,8 +10,14 @@ import {
 import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import useAuthStore from "@/store/useAuthStore";
+import {useEffect} from "react";
 
 export default function Sidebar() {
+  const {user,fetchMe} = useAuthStore()
+  useEffect(() => {
+    fetchMe();
+  }, []);
   const sideBarOptions = [
     {
       title: "Home",
@@ -31,7 +37,7 @@ export default function Sidebar() {
     {
       title: "Profile",
       icon: <UserIcon />,
-      link: "/user-profile",
+      link: `/user-profile/${user?.username}`,
     },
     {
       title: "Dashboard",

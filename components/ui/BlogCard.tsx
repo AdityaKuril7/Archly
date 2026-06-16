@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const { toggleLike, toogleSave } = useBlogStore();
@@ -57,7 +58,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
-            <span className="font-medium">{blog.author.username}</span>
+            <Link href={`/user-profile/${blog?.author.username}`} className="font-medium cursor-pointer hover:underline hover:underline-offset-2 hover:text-blue-700">{blog.author.username}</Link>
 
             <BadgeCheck size={16} className="fill-blue-500 text-blue-500" />
 
