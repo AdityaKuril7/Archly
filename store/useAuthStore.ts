@@ -5,6 +5,7 @@ import {
   ISignupUserSchema,
 } from "@/types/user.types";
 import { api } from "@/lib/api";
+import {Axios, AxiosError} from "axios";
 
 interface AuthStore {
   loading: boolean;
@@ -38,10 +39,16 @@ const useAuthStore = create<AuthStore>((set) => ({
         };
       }
     } catch (e) {
-      set({ loading: false });
+      if(e instanceof AxiosError){
+        set({ loading: false });
+        return {
+          success: false,
+          message: e.response?.data.message || "Something went wrong",
+        };
+      }
       return {
         success: false,
-        message: "Something missing",
+        message: "Something went wrong",
       };
     }
   },
@@ -66,10 +73,16 @@ const useAuthStore = create<AuthStore>((set) => ({
         };
       }
     } catch (e) {
-      set({ loading: false });
+      if(e instanceof AxiosError){
+        set({ loading: false });
+        return {
+          success: false,
+          message: e.response?.data.message || "Something went wrong",
+        };
+      }
       return {
         success: false,
-        message: "Something missing",
+        message: "Something went wrong",
       };
     }
   },
