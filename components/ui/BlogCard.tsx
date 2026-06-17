@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const { toggleLike, toogleSave } = useBlogStore();
@@ -52,9 +53,9 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     setIsSaved((prev) => !prev); // optimistic toggle
     toogleSave(blog._id, user?._id as string);
   };
-
+  const router = useRouter();
   return (
-    <div className="mb-8 border-b pb-8 cursor-pointer">
+    <div className="mb-8 border-b pb-8 cursor-pointer" onClick={()=> router.push(`/blog/${blog.slug}`)} style={{ transition: "all 0.3s ease-in-out"}}>
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDb from "@/lib/db";
 import Blog from "@/models/blog.model";
 import { ErrorHandler } from "@/lib/errorHandler";
+import slugify from "slugify";
 
 export async function GET() {
   try {
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
     await connectDb();
     const data = await req.json();
 
-    const blog = await Blog.create({ ...data });
+    const blog = await Blog.create({ ...data,slug: slugify(data.title) });
 
     if (!blog) {
       return ErrorHandler("Something went wrong");

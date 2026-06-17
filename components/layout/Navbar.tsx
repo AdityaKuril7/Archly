@@ -38,7 +38,7 @@ export default function Navbar() {
   return (
     <nav
       className={
-        "h-20 w-full border-b p-5 flex justify-between items-center border-gray-200"
+        "h-20 w-full border-b sticky p-5 flex justify-between items-center border-gray-200"
       }
     >
       <div className={"flex gap-5"}>

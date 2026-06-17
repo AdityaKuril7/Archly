@@ -4,13 +4,16 @@ import Blog from "@/models/blog.model";
 import connectDb from "@/lib/db";
 
 
-export async function GET(req:NextRequest,{params}:{params: Promise<{id: string}>}){
+export async function GET(req:NextRequest,{params}:{params: Promise<{slug: string}>}){
     try{
 
         await connectDb();
-        const {id} = await params;
+        const {slug} = await params;
 
-        const blog = await Blog.findById(id);
+        const blog = await Blog.find({slug:slug}).populate(
+            "author",
+            "username email gender savedBlogs"
+        )
 
         if(blog?.length ==0 || blog === null){
             return ErrorHandler("No blogs found",200);
@@ -19,7 +22,7 @@ export async function GET(req:NextRequest,{params}:{params: Promise<{id: string}
         return NextResponse.json({
             success: true,
             message:"Blog fetchd successfully",
-            data: blog
+            blog,
         })
 
     }catch(err){

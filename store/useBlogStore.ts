@@ -1,13 +1,15 @@
-import { api } from "@/lib/api";
-import { AddBlogSchema, IBlogModel, IBlogSchema } from "@/types/blog.types";
-import { create } from "zustand";
+import {api} from "@/lib/api";
+import {AddBlogSchema, IBlogSchema} from "@/types/blog.types";
+import {create} from "zustand";
 import useAuthStore from "./useAuthStore";
 
 interface BlogStore {
   blogs: IBlogSchema[] | null;
+  blog: IBlogSchema | null;
   savedBlogs: IBlogSchema[] | null;
   userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
+  fetchBlog: (slug:string) => void;
   toggleLike: (blogId: string, userId: string) => void;
   addBlog: (
     data: AddBlogSchema,
@@ -15,18 +17,19 @@ interface BlogStore {
   toogleSave: (blogId: string, userId: string) => void;
   searchBlogs: (query: string) => void;
   fetchLibrary: (userId: string) => void;
-  fetchUsersBlogs: (userId:string) => void;
+  fetchUsersBlogs: (userId: string) => void;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
   blogs: null,
+  blog: null,
   userBlogs: null,
   savedBlogs: null,
   fetchAllBlogs: async () => {
     try {
       const response = await api.get("/blogs/");
       if (response.status === 200) {
-        set({ blogs: response.data.blogs });
+        set({blogs: response.data.blogs});
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -36,7 +39,7 @@ const useBlogStore = create<BlogStore>((set) => ({
   },
   toggleLike: async (blogId: string, userId: string) => {
     try {
-      const response = await api.post("/blogs/like", { blogId, userId });
+      const response = await api.post("/blogs/like", {blogId, userId});
       console.log(response);
     } catch (error) {
       if (error instanceof Error) {
@@ -48,22 +51,22 @@ const useBlogStore = create<BlogStore>((set) => ({
     try {
       const response = await api.post("/blogs/", data);
       if (response.status === 201) {
-        return { success: true, message: "Blog uploaded successfully" };
+        return {success: true, message: "Blog uploaded successfully"};
       }
-      return { success: false, message: "Bad Request " };
+      return {success: false, message: "Bad Request "};
     } catch (error) {
       if (error instanceof Error) {
-        return { success: false, message: "Something went wrong" };
+        return {success: false, message: "Something went wrong"};
       }
-      return { success: false, message: "Something went wrong" };
+      return {success: false, message: "Something went wrong"};
     }
   },
   toogleSave: async (blogId: string, userId: string) => {
     try {
-      const response = await api.post("/blogs/save", { blogId, userId });
+      const response = await api.post("/blogs/save", {blogId, userId});
       if (response.status === 200) {
         // Update user.savedBlogs in authStore
-        const { user, fetchMe } = useAuthStore.getState();
+        const {user, fetchMe} = useAuthStore.getState();
         await fetchMe(); // re-fetch user so savedBlogs is fresh
       }
     } catch (error) {
@@ -77,7 +80,7 @@ const useBlogStore = create<BlogStore>((set) => ({
       const response = await api.get(`/blogs/search?q=${query}`);
       if (response.status === 200) {
         console.log(response.data.blogs);
-        set({ blogs: response.data.blogs });
+        set({blogs: response.data.blogs});
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -87,9 +90,9 @@ const useBlogStore = create<BlogStore>((set) => ({
   },
   fetchLibrary: async (userId: string) => {
     try {
-      const response = await api.post("/blogs/user-saves", { userId });
+      const response = await api.post("/blogs/user-saves", {userId});
       if (response.status === 200) {
-        set({ savedBlogs: response.data.blogs });
+        set({savedBlogs: response.data.blogs});
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -97,18 +100,31 @@ const useBlogStore = create<BlogStore>((set) => ({
       }
     }
   },
-  fetchUsersBlogs: async (username:string) =>{
-    try{
-     const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${username}?status=published`)
-      if(response.status === 200){
+  fetchUsersBlogs: async (username: string) => {
+    try {
+      const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${username}?status=published`)
+      if (response.status === 200) {
         set({userBlogs: response.data.blogs})
       }
 
-    }catch(e){
-      if(e instanceof Error)
+    } catch (e) {
+      if (e instanceof Error)
         console.log(e.message)
     }
-  }
-}));
+  },
+  fetchBlog: async (slug: string) => {
+    try {
+      const response = await api.get(`/blogs/${slug}`)
+      if (response.status === 200) {
+        set({blog: response.data.blog[0]})
+      }
+    } catch (e) {
+
+      if (e instanceof Error)
+        console.log(e.message)
+    }
+}
+}))
+
 
 export default useBlogStore;
