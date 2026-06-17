@@ -54,7 +54,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   };
 
   return (
-    <div className="mb-8 border-b pb-8">
+    <div className="mb-8 border-b pb-8 cursor-pointer">
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">

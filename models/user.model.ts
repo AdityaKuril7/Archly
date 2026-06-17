@@ -24,6 +24,10 @@ const userModelSchema = new Schema<IUserModel>(
       enum: ["male", "female"],
       default: "male",
     },
+    bio: {
+      type: String,
+      default: "",
+    },
     role: {
       type: String,
       enum: ["admin", "writer", "reader"],

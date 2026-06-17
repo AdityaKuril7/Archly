@@ -13,6 +13,7 @@ export interface IUserModel {
   createdAt: Date;
   updatedAt: Date;
   gender: string;
+  bio: string;
   role: string;
   slug: string;
   savedBlogs: mongoose.Types.ObjectId[];
@@ -27,6 +28,7 @@ export interface ILoggedUserSchema {
   gender: string;
   createdAt: string;
   updatedAt: string;
+  bio: string;
   savedBlogs: string[];
   followers: string[];
   following: string[];

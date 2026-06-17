@@ -11,10 +11,10 @@ import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 export default function Sidebar() {
-  const {user,fetchMe} = useAuthStore()
+  const { user, fetchMe } = useAuthStore();
   useEffect(() => {
     fetchMe();
   }, []);
