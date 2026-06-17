@@ -15,8 +15,6 @@ export async function GET(req: NextRequest, {params}: { params: Promise<{ userna
         const {searchParams} = new URL(req.url);
         const status = await searchParams.get("status");
 
-        console.log(username)
-
         const user = await User.findOne({username:username}).select("-password");
 
         if(!user) return ErrorHandler("User not found",404)

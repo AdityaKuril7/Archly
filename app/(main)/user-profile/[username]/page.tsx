@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { PenBox } from "lucide-react";
@@ -8,6 +8,8 @@ import useBlogStore from "@/store/useBlogStore";
 import useAuthStore from "@/store/useAuthStore";
 import { use } from "react";
 import useProfileStore from "@/store/useProfileStore";
+import { toast, Toaster } from "sonner";
+import useSocialStore from "@/store/useSocialStore";
 
 export default function Profile({
   params,
@@ -15,15 +17,42 @@ export default function Profile({
   params: Promise<{ username: string }>;
 }) {
   const { username } = use(params);
+  const { toggleFollowUser } = useSocialStore();
+  const { getUserId } = useAuthStore();
+  const userId = getUserId();
   const { profileUser, profileBlog, fetchProfile } = useProfileStore();
+  const [viewerAlreadyFollow, setViewerAlreadyFollow] =
+    useState<boolean>(false);
+  const [followersLength, setFollowersLength] = useState<number>(0);
+
+  const handleFollowUser = async () => {
+    const followerId = userId;
+    const followingId = profileUser?._id;
+    if (!followerId) {
+      toast.info("You need to login first");
+      return;
+    }
+    const result = await toggleFollowUser(followerId, followingId!);
+    const isNowFollowing = !viewerAlreadyFollow;
+    setViewerAlreadyFollow(isNowFollowing);
+    toast.info(result.message);
+    setFollowersLength((prev) => (isNowFollowing ? prev + 1 : prev - 1));
+  };
 
   useEffect(() => {
     fetchProfile(username);
-  }, []);
+  }, [username]);
+
+  useEffect(() => {
+    if (!profileUser || !userId) return;
+    setViewerAlreadyFollow(profileUser.followers.includes(userId));
+    setFollowersLength(profileUser.followers.length);
+  }, [profileUser, userId]);
+
   return (
-    <div className="h-600px w-240 justify-self-center  flex flex-col  overflow-scroll">
+    <div className="h-600px w-240 justify-self-center flex flex-col overflow-scroll">
+      <Toaster />
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
-        {/*Avatar*/}
         <div
           className={
             "w-30 h-30 rounded-full border bg-blue-300 flex items-center justify-center"
@@ -44,19 +73,17 @@ export default function Profile({
 
         <div className={"flex items-center justify-between"}>
           <div className={"flex gap-4 text-gray-600"}>
-            <Label className={"text-xl "}>
-              {profileBlog?.length} published
-            </Label>
-            <Label className={"text-xl "}>
-              {profileUser?.followers.length} followers
-            </Label>
-            <Label className={"text-xl "}>
+            <Label className={"text-xl"}>{profileBlog?.length} published</Label>
+            <Label className={"text-xl"}>{followersLength} followers</Label>
+            <Label className={"text-xl"}>
               {profileUser?.following.length} following
             </Label>
           </div>
 
           <div className={"flex gap-4 text-gray-600"}>
-            <Button variant={"outline"}>Follow</Button>
+            <Button variant={"outline"} onClick={handleFollowUser}>
+              {viewerAlreadyFollow ? "Unfollow" : "Follow"}
+            </Button>
             <Button variant={"outline"}>Message</Button>
             <Button variant={"outline"}>
               <PenBox />

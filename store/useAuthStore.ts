@@ -5,7 +5,7 @@ import {
   ISignupUserSchema,
 } from "@/types/user.types";
 import { api } from "@/lib/api";
-import {Axios, AxiosError} from "axios";
+import { Axios, AxiosError } from "axios";
 
 interface AuthStore {
   loading: boolean;
@@ -40,7 +40,7 @@ const useAuthStore = create<AuthStore>((set) => ({
         };
       }
     } catch (e) {
-      if(e instanceof AxiosError){
+      if (e instanceof AxiosError) {
         set({ loading: false });
         return {
           success: false,
@@ -74,7 +74,7 @@ const useAuthStore = create<AuthStore>((set) => ({
         };
       }
     } catch (e) {
-      if(e instanceof AxiosError){
+      if (e instanceof AxiosError) {
         set({ loading: false });
         return {
           success: false,
@@ -90,11 +90,9 @@ const useAuthStore = create<AuthStore>((set) => ({
   fetchMe: async () => {
     try {
       const response = await api.get("/auth/me");
-      console.log(response.data.user);
 
       if (response.status === 200) {
         set({ user: response.data.user });
-        console.log(response.data.user);
 
         // localStorage.setItem("userId", response.data.user._id as string);
         localStorage.setItem("userId", response.data.user?._id);
@@ -114,7 +112,6 @@ const useAuthStore = create<AuthStore>((set) => ({
     const username = localStorage.getItem("username");
     return username;
   },
-
 }));
 
 export default useAuthStore;
