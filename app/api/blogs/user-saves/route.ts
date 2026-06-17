@@ -1,6 +1,6 @@
-import { ErrorHandler } from "@/lib/errorHandler";
+import {ErrorHandler} from "@/lib/errorHandler";
 import User from "@/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
 export async function POST(req: NextRequest) {
   try {

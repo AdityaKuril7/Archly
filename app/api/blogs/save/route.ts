@@ -29,7 +29,12 @@ export async function POST(req: NextRequest) {
       await User.findByIdAndUpdate(userId, { $pull: { savedBlogs: blogId } });
     } else {
       await User.findByIdAndUpdate(userId, {
-        $addToSet: { savedBlogs: blogId },
+        $push: {
+          savedBlogs: {
+            $each: [blogId],
+            $position: 0,
+          },
+        },
       });
     }
 

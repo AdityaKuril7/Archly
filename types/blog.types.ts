@@ -19,6 +19,8 @@ interface IAuthorSchema {
   username: string;
   email: string;
   gender: "male" | "female" | "other";
+  followers: string[];
+  following: string[];
 }
 
 export interface IBlogSchema {

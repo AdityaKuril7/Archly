@@ -24,7 +24,7 @@ const Library = () => {
       <div className={"w-200 h-full grid-cols-1 overflow-scroll py-10"}>
         {savedBlogs?.length == 0 ? (
           <div className="w-full h-100 flex items-center justify-center">
-            <Label>No saves</Label>
+            <Label className="text-3xl font-black">No saves</Label>
           </div>
         ) : (
           savedBlogs?.map((blog, index) => <BlogCard blog={blog} key={index} />)

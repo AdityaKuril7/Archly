@@ -55,7 +55,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   };
   const router = useRouter();
   return (
-    <div className="mb-8 border-b pb-8 cursor-pointer" onClick={()=> router.push(`/blog/${blog.slug}`)} style={{ transition: "all 0.3s ease-in-out"}}>
+    <div className="mb-8 border-b pb-8" style={{ transition: "all 0.3s ease-in-out"}}>
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
@@ -74,7 +74,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
             </span>
           </div>
 
-          <h2 className="mb-4 text-4xl font-bold leading-tight">
+          <h2 onClick={()=> router.push(`/blog/${blog.slug}`)} className="mb-4 cursor-pointer text-4xl font-bold leading-tight">
             {blog.title}
           </h2>
 
@@ -113,7 +113,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               onClick={handleSave}
               className="flex items-center gap-4 text-gray-500"
             >
-              {isSaved ? <Bookmark className={'fill-black text-black'} size={20} /> : <Bookmark size={20} />}
+              {isSaved ? <Bookmark className={'fill-black text-black cursor-pointer'} size={20} /> : <Bookmark className={'cursor-pointer'} size={20} />}
 
               <MoreHorizontal size={20} />
             </div>

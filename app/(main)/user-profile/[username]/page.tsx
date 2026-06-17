@@ -50,7 +50,7 @@ export default function Profile({
   }, [profileUser, userId]);
 
   return (
-    <div className="h-600px w-240 justify-self-center flex flex-col overflow-scroll">
+    <div className="h-200 w-240 justify-self-center flex flex-col overflow-scroll">
       <Toaster />
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
         <div
