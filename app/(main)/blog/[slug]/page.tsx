@@ -53,7 +53,7 @@ export default function BlogPage({
   return (
     <div
       className={
-        "w-200 h-[90vh]  justify-self-center flex flex-col items-center overflow-scroll"
+        "w-200 h-[90vh]  justify-self-center font-serif flex flex-col items-center overflow-scroll"
       }
     >
       <Toaster />
@@ -83,7 +83,10 @@ export default function BlogPage({
             >
               <Label>{blog?.author.username[0]}</Label>
             </div>
-            <Link href={`/user-profile/${blog?.author.username}`} className="hover:underline hover:underline-offset-2 hover:text-blue-600">
+            <Link
+              href={`/user-profile/${blog?.author.username}`}
+              className="hover:underline hover:underline-offset-2 hover:text-blue-600"
+            >
               {blog?.author.username}
             </Link>
             {!isThisUserProfile && (
@@ -112,9 +115,9 @@ export default function BlogPage({
         </div>
         <div className={"w-full overflow-hidden rounded-lg"}>
           <motion.img
-            initial={{ scale: 1.45 }}
+            initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
+            transition={{ duration: .3, ease: "easeInOut" }}
             src={blog?.image}
             alt="blog"
             className={"w-full h-auto rounded-lg"}
