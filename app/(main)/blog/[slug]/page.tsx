@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import useSocialStore from "@/store/useSocialStore";
 import useAuthStore from "@/store/useAuthStore";
 import { toast, Toaster } from "sonner";
+import Link from "next/link";
 
 export default function BlogPage({
   params,
@@ -82,7 +83,9 @@ export default function BlogPage({
             >
               <Label>{blog?.author.username[0]}</Label>
             </div>
-            <Label className={"text-[17px]"}>{blog?.author.username}</Label>
+            <Link href={`/user-profile/${blog?.author.username}`} className="hover:underline hover:underline-offset-2 hover:text-blue-600">
+              {blog?.author.username}
+            </Link>
             {!isThisUserProfile && (
               <Button
                 onClick={() => handleFollowUser()}
