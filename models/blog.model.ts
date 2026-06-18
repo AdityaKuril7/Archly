@@ -35,6 +35,12 @@ const BlogModelSchema = new Schema<IBlogModel>(
       type: String,
       enum: ["draft", "published"],
     },
+    viewedBy: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      }
+    ],
     likes: [
       {
         type: mongoose.Types.ObjectId,

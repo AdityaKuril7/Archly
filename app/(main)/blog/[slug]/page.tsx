@@ -38,7 +38,9 @@ export default function BlogPage({
   };
 
   useEffect(() => {
-    fetchBlog(slug);
+    const userId = getUserId();
+    if(!userId) return
+    fetchBlog(slug,userId);
     console.log(blog);
   }, []);
 

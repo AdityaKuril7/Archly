@@ -6,10 +6,11 @@ import useAuthStore from "./useAuthStore";
 interface BlogStore {
   blogs: IBlogSchema[] | null;
   blog: IBlogSchema | null;
+  loading: boolean;
   savedBlogs: IBlogSchema[] | null;
   userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
-  fetchBlog: (slug:string) => void;
+  fetchBlog: (slug:string,userId:string) => void;
   toggleLike: (blogId: string, userId: string) => void;
   addBlog: (
     data: AddBlogSchema,
@@ -23,6 +24,7 @@ interface BlogStore {
 const useBlogStore = create<BlogStore>((set) => ({
   blogs: null,
   blog: null,
+  loading:false,
   userBlogs: null,
   savedBlogs: null,
   fetchAllBlogs: async () => {
@@ -90,38 +92,47 @@ const useBlogStore = create<BlogStore>((set) => ({
   },
   fetchLibrary: async (userId: string) => {
     try {
+      set({loading:true})
       const response = await api.post("/blogs/user-saves", {userId});
       if (response.status === 200) {
-        set({savedBlogs: response.data.blogs});
+        set({savedBlogs: response.data.blogs,loading:false});
       }
     } catch (e) {
       if (e instanceof Error) {
         console.log(e.message);
+        set({loading:false})
       }
+      set({loading:false})
     }
   },
   fetchUsersBlogs: async (username: string) => {
     try {
+      set({loading:true})
       const response = await api.get(`http://localhost:3000/api/blogs/my-blogs/${username}?status=published`)
       if (response.status === 200) {
-        set({userBlogs: response.data.blogs})
+        set({userBlogs: response.data.blogs,loading:false})
       }
-
+      set({loading:false})
     } catch (e) {
       if (e instanceof Error)
         console.log(e.message)
+
+      set({loading:false})
     }
   },
-  fetchBlog: async (slug: string) => {
+  fetchBlog: async (slug: string,userId:string) => {
     try {
-      const response = await api.get(`/blogs/slug/${slug}`)
+      set({loading:true})
+
+      const response = await api.get(`/blogs/slug/${slug}?userId=${userId}`)
       if (response.status === 200) {
-        set({blog: response.data.blog[0]})
+        set({blog: response.data.blog[0],loading:false})
       }
     } catch (e) {
 
       if (e instanceof Error)
         console.log(e.message)
+      set({loading:false})
     }
 }
 }))

@@ -1,11 +1,11 @@
 "use client";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { useDashboardStore } from "@/store/useDashboardStore";
+import {Card} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {useDashboardStore} from "@/store/useDashboardStore";
 import useAuthStore from "@/store/useAuthStore";
-import { useEffect } from "react";
+import {useEffect} from "react";
 import TableRow from "@/components/ui/TableRow";
-import { toast, Toaster } from "sonner";
+import {toast, Toaster} from "sonner";
 
 const InfoCard = ({
   value,
@@ -28,6 +28,9 @@ const Dashboard = () => {
     (total, blog) => total + blog.likes.length,
     0,
   );
+
+  const totalViews = blogs?.reduce((total:number,blog) => total + blog.viewedBy.length,0)
+
 
   const handleOnChangeVisiblity = async (
     id: string,
@@ -55,7 +58,7 @@ const Dashboard = () => {
           value={totalLikes?.toString() || "0"}
           description="Total Likes"
         />
-        <InfoCard value="5" description="Followers" />
+        <InfoCard value={totalViews?.toString() || "0"} description="Total Views" />
       </div>
       <div className="flex w-full mt-10 justify-center">
         <div className="rounded-xl border bg-white shadow-sm overflow-hidden">

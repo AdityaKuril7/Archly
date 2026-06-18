@@ -12,6 +12,7 @@ export interface IBlogModel {
   updatedAt: Date;
   status: string;
   likes: mongoose.Schema.Types.ObjectId[];
+  viewedBy: mongoose.Schema.Types.ObjectId[];
 }
 
 interface IAuthorSchema {
@@ -36,6 +37,7 @@ export interface IBlogSchema {
   likes: string[];
   createdAt: string;
   updatedAt: string;
+  viewedBy: string[];
   __v: number;
 }
 

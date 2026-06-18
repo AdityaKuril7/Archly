@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Ellipsis } from "lucide-react";
 import { useDashboardStore } from "@/store/useDashboardStore";
-import { Toaster } from "./sonner";
 import { IBlogSchema } from "@/types/blog.types";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +43,7 @@ export default function TableRow({
 
       <td className="px-6 py-4 text-right font-medium">{blog?.likes.length}</td>
 
-      <td className="px-6 py-4 text-right font-medium">{0}</td>
+      <td className="px-6 py-4 text-right font-medium">{blog?.viewedBy.length}</td>
 
       <td className="px-6 py-4 text-center">
         <DropdownMenu>
