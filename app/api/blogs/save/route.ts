@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-
     return NextResponse.json(
       {
         success: true,
@@ -46,6 +45,8 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     );
   } catch (err) {
-    return ErrorHandler(err.message);
+    if (err instanceof Error) {
+      return ErrorHandler(err.message);
+    }
   }
 }

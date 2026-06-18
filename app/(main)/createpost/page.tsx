@@ -1,17 +1,14 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import Editor from "@/components/ui/Editor";
+import dynamic from "next/dynamic";
+const Editor = dynamic(() => import("@/components/ui/Editor"));
 import { Button } from "@/components/ui/button";
-import { AddBlogSchema } from "@/types/blog.types";
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
-import { toast, Toaster } from "sonner";
-import { useRouter } from "next/navigation";
-import { AnimatePresence } from "framer-motion";
 import useUiStore from "@/store/useUiStore";
-import Sidebar from "@/components/layout/Sidebar";
-import { motion } from "framer-motion";
+import { AddBlogSchema } from "@/types/blog.types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast, Toaster } from "sonner";
 
 const CreatePostPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -33,7 +30,6 @@ const CreatePostPage = () => {
   }, []);
 
   const uploadToCloudinary = async (): Promise<string | null> => {
-
     if (!imageFile) return imageUrl;
 
     const formData = new FormData();
@@ -62,9 +58,7 @@ const CreatePostPage = () => {
         category,
       };
 
-      const missingField = Object.entries(fields).find(
-        ([_, value]) => !value
-      );
+      const missingField = Object.entries(fields).find(([_, value]) => !value);
 
       if (missingField) {
         return toast.info(`${missingField[0]} is missing`);
@@ -101,7 +95,7 @@ const CreatePostPage = () => {
   return (
     <div className="min-h-screen bg-background w-240 justify-self-center">
       <Toaster />
-      <motion.div className="mx-auto max-w-4xl px-6 pt-10 pb-30 overflow-scroll h-screen">
+      <div className="mx-auto max-w-4xl px-6 pt-10 pb-30 overflow-scroll h-screen">
         {/* Header */}
         <header className="mb-10 flex items-center justify-between border-b pb-6">
           <div>
@@ -198,7 +192,7 @@ const CreatePostPage = () => {
           {/* Editor */}
           <Editor value={content} onChange={setContent} />
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

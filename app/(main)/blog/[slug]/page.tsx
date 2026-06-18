@@ -39,13 +39,15 @@ export default function BlogPage({
 
   useEffect(() => {
     const userId = getUserId();
-    if(!userId) return
-    fetchBlog(slug,userId);
+    if (!userId) return;
+    fetchBlog(slug, userId);
     console.log(blog);
   }, []);
 
   useEffect(() => {
-    setViewerAlreadyFollow(blog?.author.followers.includes(getUserId()));
+    setViewerAlreadyFollow(
+      blog?.author.followers.includes(getUserId() || "") || false,
+    );
     const authorId = blog?.author._id;
     const userId = getUserId();
 
@@ -119,7 +121,7 @@ export default function BlogPage({
           <motion.img
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            transition={{ duration: .3, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             src={blog?.image}
             alt="blog"
             className={"w-full h-auto rounded-lg"}

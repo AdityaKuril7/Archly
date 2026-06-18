@@ -1,9 +1,13 @@
 import "react-quill-new/dist/quill.snow.css";
-import ReactQuill from "react-quill-new";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
 const Editor = ({
-                  value,
-                  onChange,
-                }: {
+  value,
+  onChange,
+}: {
   value: string;
   onChange: (content: string) => void;
 }) => {
