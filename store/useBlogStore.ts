@@ -114,7 +114,7 @@ const useBlogStore = create<BlogStore>((set) => ({
   },
   fetchBlog: async (slug: string) => {
     try {
-      const response = await api.get(`/blogs/${slug}`)
+      const response = await api.get(`/blogs/slug/${slug}`)
       if (response.status === 200) {
         set({blog: response.data.blog[0]})
       }

@@ -83,7 +83,7 @@ export default function Navbar() {
           <motion.div
             whileHover={{ scale: 1.1 }}
             className={
-              "h-10 w-10 bg-black/20 rounded-full flex items-center justify-center cursor-pointer"
+              "h-10 w-10 bg-yellow-200 rounded-full flex items-center justify-center cursor-pointer"
             }
           >
             <Label>{user?.username[0]}</Label>

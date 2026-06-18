@@ -1,36 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import connectDb from "@/lib/db";
 import { ErrorHandler } from "@/lib/errorHandler";
 import Blog from "@/models/blog.model";
-import connectDb from "@/lib/db";
-
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
-) {
-  try {
-    await connectDb();
-    const { slug } = await params;
-
-    const blog = await Blog.find({ slug: slug }).populate(
-      "author",
-      "username email gender savedBlogs followers following",
-    );
-
-    if (blog?.length == 0 || blog === null) {
-      return ErrorHandler("No blogs found", 200);
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: "Blog fetchd successfully",
-      blog,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return ErrorHandler(err.message);
-    }
-  }
-}
+import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
