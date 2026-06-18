@@ -15,7 +15,7 @@ interface BlogStore {
   addBlog: (
     data: AddBlogSchema,
   ) => Promise<{ success: boolean; message: string }>;
-  toogleSave: (blogId: string, userId: string) => void;
+  toggleSave: (blogId: string, userId: string) => void;
   searchBlogs: (query: string) => void;
   fetchLibrary: (userId: string) => void;
   fetchUsersBlogs: (userId: string) => void;
@@ -63,7 +63,7 @@ const useBlogStore = create<BlogStore>((set) => ({
       return {success: false, message: "Something went wrong"};
     }
   },
-  toogleSave: async (blogId: string, userId: string) => {
+  toggleSave: async (blogId: string, userId: string) => {
     try {
       const response = await api.post("/blogs/save", {blogId, userId});
       if (response.status === 200) {

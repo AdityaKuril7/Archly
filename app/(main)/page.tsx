@@ -1,20 +1,14 @@
 "use client";
-import Navbar from "@/components/layout/Navbar";
-import Sidebar from "@/components/layout/Sidebar";
-import useUiStore from "@/store/useUiStore";
-import { AnimatePresence } from "framer-motion";
 import BlogCard from "@/components/ui/BlogCard";
-import { useEffect } from "react";
-import useAuthStore from "@/store/useAuthStore";
+import {useEffect} from "react";
 import useBlogStore from "@/store/useBlogStore";
 
 export default function Home() {
-  const { isSidebarOpen } = useUiStore();
   const { fetchAllBlogs, blogs } = useBlogStore();
 
   useEffect(() => {
     fetchAllBlogs();
-  }, []);
+  }, [fetchAllBlogs]);
   return (
     <div
       className={

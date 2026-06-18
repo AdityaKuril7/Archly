@@ -1,23 +1,15 @@
 "use client"
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
-import { IBlogSchema } from "@/types/blog.types";
-import {
-  Hand,
-  MessageCircle,
-  Repeat2,
-  Bookmark,
-  MoreHorizontal,
-  BadgeCheck,
-  BookmarkCheck, BookmarkOff,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import {IBlogSchema} from "@/types/blog.types";
+import {BadgeCheck, Bookmark, EyeIcon, Hand, MessageCircle, MoreHorizontal,} from "lucide-react";
+import {useEffect, useState} from "react";
+import {motion} from "framer-motion";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
-  const { toggleLike, toogleSave } = useBlogStore();
+  const { toggleLike, toggleSave } = useBlogStore();
   const { user } = useAuthStore();
 
   const [liked, setIsLiked] = useState(false);
@@ -30,7 +22,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     setIsLiked(
       blog.likes.some((id) => id.toString() === user?._id?.toString()),
     );
-  }, [blog.likes, blog._id, user?._id, user?.savedBlogs]);
+  }, [blog.likes,user?._id]);
 
   useEffect(() => {
     setIsSaved(
@@ -51,7 +43,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
 
   const handleSave = () => {
     setIsSaved((prev) => !prev); // optimistic toggle
-    toogleSave(blog._id, user?._id as string);
+    toggleSave(blog._id, user?._id as string);
   };
   const router = useRouter();
   return (
@@ -74,9 +66,11 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
             </span>
           </div>
 
-          <h2 onClick={()=> router.push(`/blog/${blog.slug}`)} className="mb-4 cursor-pointer text-4xl font-bold leading-tight">
-            {blog.title}
-          </h2>
+          <Link href={`/blog/${blog.slug}`}>
+            <h2 className="mb-4 cursor-pointer text-4xl font-bold leading-tight">
+              {blog.title}
+            </h2>
+          </Link>
 
           <p className="line-clamp-2 text-xl leading-relaxed text-gray-600">
             {blog.excerpt}
@@ -104,8 +98,8 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               </div>
 
               <div className="flex items-center gap-1">
-                <Repeat2 size={18} />
-                <span>1</span>
+                <EyeIcon size={18} />
+                <span>{blog?.viewedBy.length}</span>
               </div>
             </div>
 
