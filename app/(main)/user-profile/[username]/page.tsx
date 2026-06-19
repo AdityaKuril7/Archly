@@ -18,12 +18,13 @@ export default function Profile({
 }) {
   const { username } = use(params);
   const { toggleFollowUser } = useSocialStore();
-  const { getUserId } = useAuthStore();
+  const { getUserId, getUsername } = useAuthStore();
   const userId = getUserId();
   const { profileUser, profileBlog, fetchProfile } = useProfileStore();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
   const [followersLength, setFollowersLength] = useState<number>(0);
+  const [isThisUserAccount, setIsThisUserAccount] = useState<boolean>();
 
   const handleFollowUser = async () => {
     const followerId = userId;
@@ -41,6 +42,7 @@ export default function Profile({
 
   useEffect(() => {
     fetchProfile(username);
+    setIsThisUserAccount(username === getUsername());
   }, [username]);
 
   useEffect(() => {
@@ -81,9 +83,11 @@ export default function Profile({
           </div>
 
           <div className={"flex gap-4 text-gray-600"}>
-            <Button variant={"outline"} onClick={handleFollowUser}>
-              {viewerAlreadyFollow ? "Unfollow" : "Follow"}
-            </Button>
+            {!isThisUserAccount && (
+              <Button variant={"outline"} onClick={handleFollowUser}>
+                {viewerAlreadyFollow ? "Unfollow" : "Follow"}
+              </Button>
+            )}
             <Button variant={"outline"}>Message</Button>
             <Button variant={"outline"}>
               <PenBox />
