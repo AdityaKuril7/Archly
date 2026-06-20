@@ -46,7 +46,7 @@ export default function BlogPage({
       toast.info(message);
       const userId = getUserId();
       if (!userId) return;
-      fetchBlog(blog?.slug!, userId);
+      fetchBlog(blog?.slug as string, userId);
       setUserComment("");
     }
   };

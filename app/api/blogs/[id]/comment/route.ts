@@ -3,7 +3,6 @@ import { ErrorHandler } from "@/lib/errorHandler";
 import { verifyToken } from "@/lib/verifyauth";
 import Blog from "@/models/blog.model";
 import Comment from "@/models/comment.model";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
