@@ -1,13 +1,15 @@
 import { ErrorHandler } from "@/lib/errorHandler";
-import Blog from "@/models/blog.model";
+import { verifyToken } from "@/lib/verifyauth";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, blogId } = await req.json();
+    const { blogId } = await req.json();
 
-    if (!userId || !blogId) {
+    const { id } = await verifyToken(req);
+
+    if (!id || !blogId) {
       return NextResponse.json(
         {
           success: false,
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
 
     if (!user)
       return NextResponse.json(
@@ -26,9 +28,9 @@ export async function POST(req: NextRequest) {
       );
 
     if (user.savedBlogs.includes(blogId)) {
-      await User.findByIdAndUpdate(userId, { $pull: { savedBlogs: blogId } });
+      await User.findByIdAndUpdate(id, { $pull: { savedBlogs: blogId } });
     } else {
-      await User.findByIdAndUpdate(userId, {
+      await User.findByIdAndUpdate(id, {
         $push: {
           savedBlogs: {
             $each: [blogId],
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     if (err instanceof Error) {
-      return ErrorHandler(err.message);
+      return ErrorHandler(err.message, 401);
     }
   }
 }

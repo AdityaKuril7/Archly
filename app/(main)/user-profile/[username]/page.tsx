@@ -10,6 +10,7 @@ import { use } from "react";
 import useProfileStore from "@/store/useProfileStore";
 import { toast, Toaster } from "sonner";
 import useSocialStore from "@/store/useSocialStore";
+import { useRouter } from "next/navigation";
 
 export default function Profile({
   params,
@@ -27,6 +28,7 @@ export default function Profile({
     useState<boolean>(false);
   const [followersLength, setFollowersLength] = useState<number>(0);
   const [isThisUserAccount, setIsThisUserAccount] = useState<boolean>();
+  const router = useRouter();
 
   const handleFollowUser = async () => {
     const followerId = userId;
@@ -43,6 +45,9 @@ export default function Profile({
   };
 
   useEffect(() => {
+    if (username === "undefined") {
+      router.replace("/auth");
+    }
     fetchProfile(username);
     setIsThisUserAccount(username === getUsername());
   }, [username]);

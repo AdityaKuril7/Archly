@@ -24,6 +24,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const [isSaved, setIsSaved] = useState(true);
   const [likeCount, setLikeCount] = useState(blog.likes.length);
 
+
   useEffect(() => {
     setLikeCount(blog.likes.length);
 
@@ -50,9 +51,12 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaved((prev) => !prev); // optimistic toggle
-    toggleSave(blog._id, user?._id as string);
+    const result = await toggleSave(blog._id);
+    if (!result) {
+      router.push("/auth");
+    }
   };
   const router = useRouter();
   return (
