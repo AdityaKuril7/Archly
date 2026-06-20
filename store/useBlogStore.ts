@@ -10,7 +10,7 @@ interface BlogStore {
   savedBlogs: IBlogSchema[] | null;
   userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
-  fetchBlog: (slug: string, userId: string) => void;
+  fetchBlog: (slug: string, userId: string) => Promise<boolean>;
   toggleLike: (blogId: string) => Promise<boolean>;
   addBlog: (
     data: AddBlogSchema,
@@ -130,13 +130,13 @@ const useBlogStore = create<BlogStore>((set) => ({
       const response = await api.get(`/blogs/slug/${slug}`);
       if (response.status === 200) {
         set({ blog: response.data.blog[0], loading: false });
+        return true;
       }
+      return false;
       console.log(response);
     } catch (e) {
-      if (e instanceof Error) console.log(e.message);
-      console.log(e);
-
       set({ loading: false });
+      return false;
     }
   },
 }));

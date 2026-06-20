@@ -38,7 +38,7 @@ export async function GET(
     });
   } catch (err) {
     if (err instanceof Error) {
-      return ErrorHandler(err.message);
+      return ErrorHandler(err.message,401);
     }
   }
 }

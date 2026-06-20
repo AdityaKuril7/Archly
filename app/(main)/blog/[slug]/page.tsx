@@ -51,11 +51,20 @@ export default function BlogPage({
     }
   };
 
-  useEffect(() => {
+  const fetchCurrentBlog = async () => {
     const userId = getUserId();
     if (!userId) return;
-    fetchBlog(slug, userId);
+
     console.log(blog);
+    const result = await fetchBlog(slug, userId);
+
+    if (!result) {
+      router.push("/auth");
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentBlog();
   }, []);
 
   useEffect(() => {
@@ -177,7 +186,11 @@ export default function BlogPage({
             <Label className="slef-center text-3xl">Be a first commenter</Label>
           ) : (
             blog?.comments.map((comment, index) => (
-              <CommentCard key={comment._id} blogSlug={blog.slug} comment={comment} />
+              <CommentCard
+                key={comment._id}
+                blogSlug={blog.slug}
+                comment={comment}
+              />
             ))
           )}
         </div>
