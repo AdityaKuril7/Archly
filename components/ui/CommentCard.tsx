@@ -1,7 +1,17 @@
 import { IComment } from "@/types/blog.types";
 import { Label } from "./label";
 import React from "react";
-import { Heart } from "lucide-react";
+import { Heart, MenuIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
 
 interface CommentCardProps {
   comment: IComment;
@@ -38,10 +48,20 @@ const CommentCard = ({ comment }: CommentCardProps) => {
       </div>
 
       {/* Footer actions */}
-      <div>
+      <div className="flex w-full items-center justify-between">
         <div className="flex gap-2 items-center">
           <Heart size={20} />
           <span className="text-xl">{comment.likes.length}</span>
+        </div>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MenuIcon />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
