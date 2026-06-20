@@ -177,7 +177,7 @@ export default function BlogPage({
             <Label className="slef-center text-3xl">Be a first commenter</Label>
           ) : (
             blog?.comments.map((comment, index) => (
-              <CommentCard key={comment._id} comment={comment} />
+              <CommentCard key={comment._id} blogSlug={blog.slug} comment={comment} />
             ))
           )}
         </div>

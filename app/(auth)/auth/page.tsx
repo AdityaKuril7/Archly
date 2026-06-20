@@ -1,43 +1,40 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Toaster } from "@/components/ui/sonner"
-import { useState } from "react"
-import { toast } from "sonner"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Toaster } from "@/components/ui/sonner";
+import { useState } from "react";
+import { toast } from "sonner";
 import useAuthStore from "@/store/useAuthStore";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true)
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const {loading,signup,login} = useAuthStore()
-  const router = useRouter()
-
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { loading, signup, login } = useAuthStore();
+  const router = useRouter();
 
   const handleLogin = async () => {
-    const result = await login({email,password})
-    if(result.success) {
-      toast.success(result.message)
-      router.push("/")
-    }
-    else toast.error(result.message)
-  }
+    const result = await login({ email, password });
+    if (result.success) {
+      toast.success(result.message);
+      router.push("/");
+    } else toast.error(result.message);
+  };
 
   const handleSignup = async () => {
-    const result = await signup({username,email,password})
+    const result = await signup({ username, email, password });
     if (result.success) {
       toast.success(result.message);
 
       setTimeout(() => {
-        setIsLogin(true)
+        setIsLogin(true);
       }, 1000);
-    }
-    else toast.error(result.message)
-  }
+    } else toast.error(result.message);
+  };
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-linear-190 from-purple-300 to-blue-300">
@@ -47,22 +44,22 @@ const Auth = () => {
           {isLogin ? "Welcome Back" : "Create Account"}
         </Label>
         <div className="flex w-100 flex-col gap-y-5">
-          {!isLogin &&
-              <Input
-                  type="email"
-                  className="h-13 pl-5"
-                  placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-              />
-          }
+          {!isLogin && (
             <Input
               type="email"
               className="h-13 pl-5"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
+          )}
+          <Input
+            type="email"
+            className="h-13 pl-5"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Input
             type="password"
             className="h-13 pl-5"
@@ -89,7 +86,7 @@ const Auth = () => {
         </div>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;

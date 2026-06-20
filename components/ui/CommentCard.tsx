@@ -12,12 +12,29 @@ import {
   DropdownMenuSub,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import useSocialStore from "@/store/useSocialStore";
+import useBlogStore from "@/store/useBlogStore";
+import useAuthStore from "@/store/useAuthStore";
+import { toast } from "sonner";
 
 interface CommentCardProps {
   comment: IComment;
+  blogSlug: string;
 }
 
-const CommentCard = ({ comment }: CommentCardProps) => {
+const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
+  const { deleteComment } = useSocialStore();
+  const { fetchBlog } = useBlogStore();
+  const { getUserId } = useAuthStore();
+  const handleDeleteComment = async (commentId: string) => {
+    const result = await deleteComment(commentId);
+    if (result) {
+      const userId = getUserId();
+      if (!userId) return toast.info("Something went wrong");
+
+      fetchBlog(blogSlug, userId);
+    }
+  };
   return (
     <div className="w-full border-b-2 flex flex-col gap-5 border-gray-200 h-auto p-4">
       {/* Header */}
@@ -59,7 +76,12 @@ const CommentCard = ({ comment }: CommentCardProps) => {
               <MenuIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => handleDeleteComment(comment._id)}
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -1,12 +1,20 @@
-"use client"
+"use client";
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
-import {IBlogSchema} from "@/types/blog.types";
-import {BadgeCheck, Bookmark, EyeIcon, Hand, Heart, MessageCircle, MoreHorizontal,} from "lucide-react";
-import {useEffect, useState} from "react";
-import {motion} from "framer-motion";
+import { IBlogSchema } from "@/types/blog.types";
+import {
+  BadgeCheck,
+  Bookmark,
+  EyeIcon,
+  Hand,
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   const { toggleLike, toggleSave } = useBlogStore();
@@ -22,7 +30,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     setIsLiked(
       blog.likes.some((id) => id.toString() === user?._id?.toString()),
     );
-  }, [blog.likes,user?._id]);
+  }, [blog.likes, user?._id]);
 
   useEffect(() => {
     setIsSaved(
@@ -32,13 +40,14 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
     );
   }, [user?.savedBlogs, blog._id]);
 
-  const handleLike = () => {
-    if (!user?._id) return;
-
+  const handleLike = async () => {
     setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
     setIsLiked((prev) => !prev);
 
-    toggleLike(blog._id, user._id);
+    const result = await toggleLike(blog._id);
+    if (!result) {
+      router.push("/auth");
+    }
   };
 
   const handleSave = () => {
@@ -47,11 +56,19 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   };
   const router = useRouter();
   return (
-    <div className="mb-8 border-b pb-8" style={{ transition: "all 0.3s ease-in-out"}}>
+    <div
+      className="mb-8 border-b pb-8"
+      style={{ transition: "all 0.3s ease-in-out" }}
+    >
       <div className="flex gap-6">
         <div className="flex-1">
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
-            <Link href={`/user-profile/${blog?.author.username}`} className="font-medium cursor-pointer hover:underline hover:underline-offset-2 hover:text-blue-700">{blog.author.username}</Link>
+            <Link
+              href={`/user-profile/${blog?.author.username}`}
+              className="font-medium cursor-pointer hover:underline hover:underline-offset-2 hover:text-blue-700"
+            >
+              {blog.author.username}
+            </Link>
 
             <BadgeCheck size={16} className="fill-blue-500 text-blue-500" />
 
@@ -84,7 +101,9 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               >
                 <Heart
                   size={18}
-                  className={liked ? "fill-red-500  text-red-500" : "text-black"}
+                  className={
+                    liked ? "fill-red-500  text-red-500" : "text-black"
+                  }
                 />
 
                 <span className={liked ? "text-red-500" : "text-black"}>
@@ -107,7 +126,14 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
               onClick={handleSave}
               className="flex items-center gap-4 text-gray-500"
             >
-              {isSaved ? <Bookmark className={'fill-black text-black cursor-pointer'} size={20} /> : <Bookmark className={'cursor-pointer'} size={20} />}
+              {isSaved ? (
+                <Bookmark
+                  className={"fill-black text-black cursor-pointer"}
+                  size={20}
+                />
+              ) : (
+                <Bookmark className={"cursor-pointer"} size={20} />
+              )}
 
               <MoreHorizontal size={20} />
             </div>
