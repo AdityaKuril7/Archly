@@ -11,7 +11,7 @@ interface BlogStore {
   userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
   fetchBlog: (slug: string, userId: string) => void;
-  toggleLike: (blogId: string, userId: string) => void;
+  toggleLike: (blogId: string) => Promise<boolean>;
   addBlog: (
     data: AddBlogSchema,
   ) => Promise<{ success: boolean; message: string }>;
@@ -39,14 +39,16 @@ const useBlogStore = create<BlogStore>((set) => ({
       }
     }
   },
-  toggleLike: async (blogId: string, userId: string) => {
+  toggleLike: async (blogId: string) => {
     try {
-      const response = await api.post("/blogs/like", { blogId, userId });
-      console.log(response);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
+      const response = await api.post("/blogs/like", { blogId });
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
       }
+    } catch (error) {
+      return false;
     }
   },
   addBlog: async (data: AddBlogSchema) => {
@@ -121,11 +123,11 @@ const useBlogStore = create<BlogStore>((set) => ({
       set({ loading: false });
     }
   },
-  fetchBlog: async (slug: string, userId: string) => {
+  fetchBlog: async (slug: string) => {
     try {
       set({ loading: true });
 
-      const response = await api.get(`/blogs/slug/${slug}?userId=${userId}`);
+      const response = await api.get(`/blogs/slug/${slug}`);
       if (response.status === 200) {
         set({ blog: response.data.blog[0], loading: false });
       }

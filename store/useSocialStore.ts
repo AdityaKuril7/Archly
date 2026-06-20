@@ -11,6 +11,7 @@ interface SocialStore {
     blogId: string,
     content: string,
   ) => Promise<{ success: boolean; message: string }>;
+  deleteComment: (commentId: string) => Promise<boolean>;
 }
 
 const useSocialStore = create<SocialStore>((set) => ({
@@ -72,6 +73,18 @@ const useSocialStore = create<SocialStore>((set) => ({
           message: "Something went wrong",
         };
       }
+    }
+  },
+
+  deleteComment: async (commentId: string) => {
+    try {
+      const response = await api.delete(`/comment/${commentId}`);
+      if (response.status === 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   },
 }));
