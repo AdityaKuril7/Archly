@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ErrorHandler } from "@/lib/errorHandler";
 import Blog from "@/models/blog.model";
 import connectDb from "@/lib/db";
-import Comment from "@/models/comment.model";
-import mongoose from "mongoose";
+import { verifyToken } from "@/lib/verifyauth";
 
 export async function GET(
   req: NextRequest,
@@ -12,9 +11,9 @@ export async function GET(
   try {
     await connectDb();
     const { slug } = await params;
-    const { searchParams } = new URL(req.url);
 
-    const userId = searchParams.get("userId");
+    const decoded = await verifyToken(req);
+
     const blog = await Blog.find({ slug: slug })
       .populate({
         path: "comments",
@@ -29,7 +28,7 @@ export async function GET(
     }
 
     await Blog.findByIdAndUpdate(blog[0]._id, {
-      $addToSet: { viewedBy: userId },
+      $addToSet: { viewedBy: decoded?.id },
     });
 
     return NextResponse.json({

@@ -28,7 +28,8 @@ export async function POST(
       return ErrorHandler("Server Error", 500);
     }
 
-    const decoded = await verifyToken(token);
+    const decoded = await verifyToken(req);
+    if (!decoded) return;
     console.log(decoded);
 
     const comment = await Comment.create({
@@ -42,11 +43,14 @@ export async function POST(
     });
 
     if (comment) {
-      return NextResponse.json({
-        success: true,
-        message: "Comment uploaded",
-        comment,
-      },{status:201});
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Comment uploaded",
+          comment,
+        },
+        { status: 201 },
+      );
     }
   } catch (error) {
     if (error instanceof Error) {

@@ -5,12 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get("token")?.value
-
-    if (!token)
-      return ErrorHandler("Missing token please try to login first", 400);
-
-    const decoded = await verifyToken(token);
+    
+    const decoded = await verifyToken(req);
+    if(!decoded) return
 
     const user = await User.findById(decoded?.id).select("-password");
 

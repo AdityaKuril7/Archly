@@ -1,30 +1,33 @@
-import {NextRequest, NextResponse} from "next/server";
-import {ErrorHandler} from "@/lib/errorHandler";
+import { NextRequest, NextResponse } from "next/server";
+import { ErrorHandler } from "@/lib/errorHandler";
 import Blog from "@/models/blog.model";
 import connectDb from "@/lib/db";
+import { verifyToken } from "@/lib/verifyauth";
 
-export async function POST(req:NextRequest) {
-  try{
+export async function POST(req: NextRequest) {
+  try {
     await connectDb();
-    const {userId,blogId} = await req.json();
+    const { blogId } = await req.json();
 
-    if(!userId || !blogId) return ErrorHandler("userId and blogId are required",400);
+    const decoded = await verifyToken(req);
 
-    const blog = await Blog.findById(blogId)
+    if (!decoded?.id || !blogId)
+      return ErrorHandler("userId and blogId are required", 400);
 
-    if(blog.likes.includes(userId)){
-      await Blog.findByIdAndUpdate(blogId,{$pull:{likes:userId}})
-    }else{
-      await Blog.findByIdAndUpdate(blogId,{$addToSet:{likes:userId}})
+    const blog = await Blog.findById(blogId);
+
+    if (blog.likes.includes(decoded.id)) {
+      await Blog.findByIdAndUpdate(blogId, { $pull: { likes: decoded.id } });
+    } else {
+      await Blog.findByIdAndUpdate(blogId, { $addToSet: { likes: decoded.id } });
     }
 
-    if(!blog) return ErrorHandler("Blog not found",404);
+    if (!blog) return ErrorHandler("Blog not found", 404);
 
     return NextResponse.json({
       success: true,
-    })
-
-  }catch(e){
-    if(e instanceof Error) return ErrorHandler(e.message,400);
+    });
+  } catch (e) {
+    if (e instanceof Error) return ErrorHandler(e.message, 400);
   }
 }
