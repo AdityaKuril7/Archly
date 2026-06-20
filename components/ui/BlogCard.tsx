@@ -2,7 +2,7 @@
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
 import {IBlogSchema} from "@/types/blog.types";
-import {BadgeCheck, Bookmark, EyeIcon, Hand, MessageCircle, MoreHorizontal,} from "lucide-react";
+import {BadgeCheck, Bookmark, EyeIcon, Hand, Heart, MessageCircle, MoreHorizontal,} from "lucide-react";
 import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import Link from "next/link";
@@ -82,9 +82,9 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
                 onClick={handleLike}
                 className="flex cursor-pointer items-center gap-1"
               >
-                <Hand
+                <Heart
                   size={18}
-                  className={liked ? "text-red-500" : "text-black"}
+                  className={liked ? "fill-red-500  text-red-500" : "text-black"}
                 />
 
                 <span className={liked ? "text-red-500" : "text-black"}>
@@ -94,7 +94,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
 
               <div className="flex items-center gap-1">
                 <MessageCircle size={18} />
-                <span>2</span>
+                <span>{blog.comments.length}</span>
               </div>
 
               <div className="flex items-center gap-1">

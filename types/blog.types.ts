@@ -11,6 +11,7 @@ export interface IBlogModel {
   createdAt: Date;
   updatedAt: Date;
   status: string;
+  comments: string[];
   likes: mongoose.Schema.Types.ObjectId[];
   viewedBy: mongoose.Schema.Types.ObjectId[];
 }
@@ -23,7 +24,19 @@ interface IAuthorSchema {
   followers: string[];
   following: string[];
 }
-
+export interface IComment {
+  _id: string;
+  userId: {
+    _id: string;
+    username: string;
+  };
+  blogId: string;
+  likes: string[];
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 export interface IBlogSchema {
   _id: string;
   author: IAuthorSchema;
@@ -38,6 +51,7 @@ export interface IBlogSchema {
   createdAt: string;
   updatedAt: string;
   viewedBy: string[];
+  comments:  IComment[];
   __v: number;
 }
 

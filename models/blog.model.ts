@@ -39,12 +39,18 @@ const BlogModelSchema = new Schema<IBlogModel>(
       {
         type: mongoose.Types.ObjectId,
         ref: "User",
-      }
+      },
     ],
     likes: [
       {
         type: mongoose.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    comments: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Comment",
       },
     ],
   },

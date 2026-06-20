@@ -9,6 +9,7 @@ import useSocialStore from "@/store/useSocialStore";
 import useAuthStore from "@/store/useAuthStore";
 import { toast, Toaster } from "sonner";
 import Link from "next/link";
+import CommentCard from "@/components/ui/CommentCard";
 
 export default function BlogPage({
   params,
@@ -18,11 +19,13 @@ export default function BlogPage({
   const { slug } = use(params);
   const { blog, fetchBlog } = useBlogStore();
   const router = useRouter();
-  const { toggleFollowUser } = useSocialStore();
-  const { getUserId } = useAuthStore();
+  const { toggleFollowUser, uploadComment } = useSocialStore();
+  const { getUserId, getUsername } = useAuthStore();
   const [isThisUserProfile, setIsThisUserProfile] = useState<boolean>();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
+
+  const [userComment, setUserComment] = useState<string>("");
 
   const handleFollowUser = async () => {
     const followerId = getUserId();
@@ -35,6 +38,17 @@ export default function BlogPage({
     const isNowFollowing = !viewerAlreadyFollow;
     setViewerAlreadyFollow(isNowFollowing);
     toast.info(result.message);
+  };
+
+  const handleUploadComment = async () => {
+    const { success, message } = await uploadComment(blog?._id!, userComment);
+    if (success) {
+      toast.info(message);
+      const userId = getUserId();
+      if (!userId) return;
+      fetchBlog(blog?.slug!, userId);
+      setUserComment("");
+    }
   };
 
   useEffect(() => {
@@ -131,9 +145,42 @@ export default function BlogPage({
 
       <main className="min-h-screen w-full p-5">
         <div
-          className="prose max-w-none text-[20px] font-serif break-words hyphens-none"
+          className="prose max-w-none border-b-2 pb-5 text-[20px] font-serif break-words hyphens-none"
           dangerouslySetInnerHTML={{ __html: blog?.content || "Not Specified" }}
         />
+
+        <div className="w-full h-auto py-5 flex gap-4 p-3 ">
+          <p>Hey {getUsername()}</p>
+        </div>
+
+        <div className="flex flex-col p-3 gap-4 mb-20">
+          <textarea
+            value={userComment}
+            onChange={(e) => setUserComment(e.target.value)}
+            className="w-full border p-5 h-30  rounded-xl resize-none"
+            placeholder="What you think about this ?"
+          />
+          <Button
+            disabled={!userComment}
+            variant={"default"}
+            className="p-5 w-fit"
+            onClick={handleUploadComment}
+          >
+            Respond
+          </Button>
+        </div>
+
+        <Label className="font-bold text-3xl m-5 ">Comments</Label>
+
+        <div className="w-full h-auto flex flex-col items-center">
+          {blog?.comments.length === 0 ? (
+            <Label className="slef-center text-3xl">Be a first commenter</Label>
+          ) : (
+            blog?.comments.map((comment, index) => (
+              <CommentCard key={comment._id} comment={comment} />
+            ))
+          )}
+        </div>
       </main>
     </div>
   );

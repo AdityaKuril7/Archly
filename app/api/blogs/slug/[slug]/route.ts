@@ -1,7 +1,9 @@
-import {NextRequest, NextResponse} from "next/server";
-import {ErrorHandler} from "@/lib/errorHandler";
+import { NextRequest, NextResponse } from "next/server";
+import { ErrorHandler } from "@/lib/errorHandler";
 import Blog from "@/models/blog.model";
 import connectDb from "@/lib/db";
+import Comment from "@/models/comment.model";
+import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
@@ -10,21 +12,25 @@ export async function GET(
   try {
     await connectDb();
     const { slug } = await params;
-    const {searchParams} = new URL(req.url);
+    const { searchParams } = new URL(req.url);
 
     const userId = searchParams.get("userId");
-
-    const blog = await Blog.find({ slug: slug }).populate(
-      "author",
-      "username email gender savedBlogs followers following",
-    );
-
-
+    const blog = await Blog.find({ slug: slug })
+      .populate({
+        path: "comments",
+        populate: { path: "userId", select: "username" },
+      })
+      .populate(
+        "author",
+        "username email gender savedBlogs followers following",
+      );
     if (blog?.length == 0 || blog === null) {
       return ErrorHandler("No blogs found", 200);
     }
 
-    await Blog.findByIdAndUpdate(blog[0]._id, {$addToSet: {viewedBy: userId}})
+    await Blog.findByIdAndUpdate(blog[0]._id, {
+      $addToSet: { viewedBy: userId },
+    });
 
     return NextResponse.json({
       success: true,

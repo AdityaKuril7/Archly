@@ -19,7 +19,9 @@ export default function Profile({
   const { username } = use(params);
   const { toggleFollowUser } = useSocialStore();
   const { getUserId, getUsername } = useAuthStore();
+
   const userId = getUserId();
+
   const { profileUser, profileBlog, fetchProfile } = useProfileStore();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
