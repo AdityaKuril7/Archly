@@ -4,7 +4,6 @@ import { NextRequest } from "next/server";
 export async function verifyToken(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
 
-  console.log("token", token);
 
   if (!token) throw new Error("Unauthorized");
   if (!process.env.SECRET_KEY) {

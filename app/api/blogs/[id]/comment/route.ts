@@ -30,7 +30,6 @@ export async function POST(
 
     const decoded = await verifyToken(req);
     if (!decoded) return;
-    console.log(decoded);
 
     const comment = await Comment.create({
       ...data,

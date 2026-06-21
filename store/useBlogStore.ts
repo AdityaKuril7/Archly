@@ -82,7 +82,6 @@ const useBlogStore = create<BlogStore>((set) => ({
     try {
       const response = await api.get(`/blogs/search?q=${query}`);
       if (response.status === 200) {
-        console.log(response.data.blogs);
         set({ blogs: response.data.blogs });
       }
     } catch (e) {
@@ -132,7 +131,6 @@ const useBlogStore = create<BlogStore>((set) => ({
         return true;
       }
       return false;
-      console.log(response);
     } catch (e) {
       set({ loading: false });
       return false;

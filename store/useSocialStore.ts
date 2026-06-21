@@ -11,7 +11,7 @@ interface SocialStore {
     blogId: string,
     content: string,
   ) => Promise<{ success: boolean; message: string }>;
-  deleteComment: (commentId: string) => Promise<boolean>;
+  deleteComment: (commentId: string, blogId: string) => Promise<boolean>;
 }
 
 const useSocialStore = create<SocialStore>((set) => ({
@@ -76,9 +76,11 @@ const useSocialStore = create<SocialStore>((set) => ({
     }
   },
 
-  deleteComment: async (commentId: string) => {
+  deleteComment: async (commentId: string, blogId: string) => {
     try {
-      const response = await api.delete(`/comment/${commentId}`);
+      const response = await api.delete(
+        `/comment/${commentId}?blogId=${blogId}`,
+      );
       if (response.status === 200) {
         return true;
       }

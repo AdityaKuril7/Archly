@@ -51,12 +51,11 @@ export interface IBlogSchema {
   createdAt: string;
   updatedAt: string;
   viewedBy: string[];
-  comments:  IComment[];
+  comments: IComment[];
   __v: number;
 }
 
 export interface AddBlogSchema {
-  author: string;
   title: string;
   excerpt: string;
   image: string | null;

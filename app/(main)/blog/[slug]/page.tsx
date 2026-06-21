@@ -41,7 +41,8 @@ export default function BlogPage({
   };
 
   const handleUploadComment = async () => {
-    const { success, message } = await uploadComment(blog?._id!, userComment);
+    if (!blog?._id) return toast.info("Server error");
+    const { success, message } = await uploadComment(blog?._id, userComment);
     if (success) {
       toast.info(message);
       const userId = getUserId();
@@ -55,7 +56,6 @@ export default function BlogPage({
     const userId = getUserId();
     if (!userId) return;
 
-    console.log(blog);
     const result = await fetchBlog(slug, userId);
 
     if (!result) {

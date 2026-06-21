@@ -3,6 +3,7 @@ import connectDb from "@/lib/db";
 import Blog from "@/models/blog.model";
 import { ErrorHandler } from "@/lib/errorHandler";
 import slugify from "slugify";
+import { verifyToken } from "@/lib/verifyauth";
 
 export async function GET() {
   try {
@@ -33,7 +34,14 @@ export async function POST(req: NextRequest) {
     await connectDb();
     const data = await req.json();
 
-    const blog = await Blog.create({ ...data,slug: slugify(data.title) });
+    const { id } = await verifyToken(req);
+    if (!id) return ErrorHandler("Unauthorized", 401);
+
+    const blog = await Blog.create({
+      ...data,
+      author: id,
+      slug: slugify(data.title),
+    });
 
     if (!blog) {
       return ErrorHandler("Something went wrong");
@@ -49,7 +57,10 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     if (err instanceof Error) {
-      return ErrorHandler(err.message);
+      return ErrorHandler(
+        err.message,
+        err.message === "Unauthorized" ? 401 : 500,
+      );
     }
   }
 }

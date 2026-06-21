@@ -1,6 +1,6 @@
 import { IComment } from "@/types/blog.types";
 import { Label } from "./label";
-import React from "react";
+import React, { useState } from "react";
 import { Heart, MenuIcon } from "lucide-react";
 import {
   DropdownMenu,
@@ -26,15 +26,16 @@ const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
   const { deleteComment } = useSocialStore();
   const { fetchBlog } = useBlogStore();
   const { getUserId } = useAuthStore();
+  const userId = getUserId();
   const handleDeleteComment = async (commentId: string) => {
-    const result = await deleteComment(commentId);
+    const result = await deleteComment(commentId, comment.blogId);
     if (result) {
-      const userId = getUserId();
       if (!userId) return toast.info("Something went wrong");
 
       fetchBlog(blogSlug, userId);
     }
   };
+
   return (
     <div className="w-full border-b-2 flex flex-col gap-5 border-gray-200 h-auto p-4">
       {/* Header */}
@@ -71,19 +72,21 @@ const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
           <span className="text-xl">{comment.likes.length}</span>
         </div>
         <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MenuIcon />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => handleDeleteComment(comment._id)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {userId === comment.userId._id && (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MenuIcon />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => handleDeleteComment(comment._id)}
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </div>

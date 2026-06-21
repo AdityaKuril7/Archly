@@ -68,7 +68,6 @@ const CreatePostPage = () => {
       setImageUrl(uploadedImageUrl);
 
       const newBlog: AddBlogSchema = {
-        author: user._id!,
         category,
         content,
         excerpt,
