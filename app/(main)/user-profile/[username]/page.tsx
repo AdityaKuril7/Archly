@@ -10,6 +10,7 @@ import useProfileStore from "@/store/useProfileStore";
 import { toast, Toaster } from "sonner";
 import useSocialStore from "@/store/useSocialStore";
 import { useRouter } from "next/navigation";
+import EditProfileCard from "@/components/ui/EditProfileCard";
 
 export default function Profile({
   params,
@@ -22,7 +23,7 @@ export default function Profile({
 
   const userId = getUserId();
 
-  const { profileUser, profileBlog, fetchProfile } = useProfileStore();
+  const { profileUser, profileBlog, fetchProfile,isEditCardVisible,toggleEditCard } = useProfileStore();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
   const [followersLength, setFollowersLength] = useState<number>(0);
@@ -60,6 +61,7 @@ export default function Profile({
   return (
     <div className="h-200 w-240 justify-self-center flex flex-col overflow-scroll">
       <Toaster />
+      {isEditCardVisible && <EditProfileCard />}
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
         <div
           className={
@@ -94,8 +96,7 @@ export default function Profile({
                 {viewerAlreadyFollow ? "Unfollow" : "Follow"}
               </Button>
             )}
-            <Button variant={"outline"}>Message</Button>
-            <Button variant={"outline"}>
+            <Button onClick={toggleEditCard} variant={"outline"}>
               <PenBox />
               Edit Profile
             </Button>

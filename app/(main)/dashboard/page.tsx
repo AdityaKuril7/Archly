@@ -22,7 +22,9 @@ const InfoCard = ({
 
 const Dashboard = () => {
   const { getUsername } = useAuthStore();
-  const { blogs, fetchDashboardBlogs, toggleVisiblity } = useDashboardStore();
+  const { blogs, fetchDashboardBlogs, toggleVisiblity,deleteBlog } = useDashboardStore();
+  const username = getUsername();
+
 
   const totalLikes = blogs?.reduce(
     (total, blog) => total + blog.likes.length,
@@ -39,14 +41,22 @@ const Dashboard = () => {
     status: "published" | "draft",
   ) => {
     const { success, message } = await toggleVisiblity(id, status);
-    if (success) toast.info(message);
-    location.reload();
+    if (success) {
+      toast.info(message);
+      fetchDashboardBlogs(username || "");
+    }
   };
 
   useEffect(() => {
-    const username = getUsername();
     fetchDashboardBlogs(username || "");
   }, []);
+
+  const handleDeleteBlog = async (id: string) => {
+    const result = await deleteBlog(id);
+    if (result){
+      fetchDashboardBlogs(username || "");
+    }
+  }
 
   return (
     <div className="justify-self-center w-240 flex flex-col items-center ">
@@ -97,6 +107,7 @@ const Dashboard = () => {
                     onClickChangeVisibility={() =>
                       handleOnChangeVisiblity(blog._id, blog.status)
                     }
+                    onClickDelete={()=> handleDeleteBlog(blog._id)}
                   />
                 ))}
               </tbody>

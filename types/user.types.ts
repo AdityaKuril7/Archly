@@ -14,6 +14,7 @@ export interface IUserModel {
   updatedAt: Date;
   gender: string;
   bio: string;
+  avatar: string;
   role: string;
   slug: string;
   savedBlogs: mongoose.Types.ObjectId[];
@@ -28,6 +29,7 @@ export interface ILoggedUserSchema {
   gender: string;
   createdAt: string;
   updatedAt: string;
+  avatar: string;
   bio: string;
   savedBlogs: string[];
   followers: string[];
@@ -38,4 +40,10 @@ export interface ILoggedUserSchema {
 export interface ILoginSchema {
   email: string;
   password: string;
+}
+
+export interface IUpdateUser {
+  username:string | null
+  avatar: string | null
+  bio: string | null
 }

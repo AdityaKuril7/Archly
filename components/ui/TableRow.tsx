@@ -60,7 +60,7 @@ export default function TableRow({
                 : "Published This Blog"}
             </DropdownMenuItem>
 
-            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={onClickDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </td>

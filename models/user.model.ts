@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import { IUserModel } from "@/types/user.types";
+import mongoose, {Schema} from "mongoose";
+import {IUserModel} from "@/types/user.types";
 
 const userModelSchema = new Schema<IUserModel>(
   {
@@ -34,6 +34,10 @@ const userModelSchema = new Schema<IUserModel>(
     },
     slug: {
       type: String,
+    },
+    avatar: {
+      type:String,
+      default: ""
     },
     savedBlogs: {
       type: [{ type: mongoose.Types.ObjectId, ref: "Blog" }],

@@ -12,6 +12,7 @@ interface DashboardStore {
     blogId: string,
     currentVisiblity: string,
   ) => Promise<{ success: boolean; message: string }>;
+  deleteBlog: (blogId:string) => Promise<boolean>
 }
 
 export const useDashboardStore = create<DashboardStore>((set) => ({
@@ -50,4 +51,15 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
       return { success: false, message: "Exception occur" };
     }
   },
+  deleteBlog: async (blogId:string) => {
+    try{
+      const response = await api.delete(`/blogs/${blogId}`)
+      if(response.status === 200){
+        return true
+      }
+      return false
+    }catch (e) {
+      return false
+    }
+  }
 }));
