@@ -9,10 +9,10 @@ interface ProfileStore {
   fetchProfile: (username:string) => void,
   isEditCardVisible: boolean,
   toggleEditCard: () => void,
-  updateProfile: (data:IUpdateUser) => void,
+  updateProfile: (data:IUpdateUser) => Promise<boolean>,
 }
 
-const useProfileStore = create<ProfileStore>((set)=>({
+const useProfileStore = create<ProfileStore>((set,get)=>({
   profileUser:  null,
   isEditCardVisible: false,
   toggleEditCard: () => set((state)=> ({isEditCardVisible: !state.isEditCardVisible})),
@@ -30,9 +30,14 @@ const useProfileStore = create<ProfileStore>((set)=>({
   },
   updateProfile: async (data:IUpdateUser) => {
     try{
-
+      const response = await api.put("users/",{data})
+      if(response.status === 200){
+        return true
+      }
+      return false
     }catch(error){
-
+      console.log(error)
+      return false
     }
   }
 }))

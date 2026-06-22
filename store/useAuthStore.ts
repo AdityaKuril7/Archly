@@ -75,6 +75,7 @@ const useAuthStore = create<AuthStore>((set) => ({
       }
     } catch (e) {
       if (e instanceof AxiosError) {
+        console.log(e.response)
         set({ loading: false });
         return {
           success: false,
@@ -105,11 +106,17 @@ const useAuthStore = create<AuthStore>((set) => ({
     }
   },
   getUserId: () => {
-    const userId = localStorage.getItem("userId");
+    if (typeof window === "undefined") {
+      return null;
+    }
+    const userId : string | null = localStorage.getItem("userId");
     return userId;
   },
   getUsername: () => {
-    const username = localStorage.getItem("username");
+    if (typeof window === "undefined") {
+      return null;
+    }
+    const username: string | null = localStorage.getItem("username");
     return username;
   },
 }));

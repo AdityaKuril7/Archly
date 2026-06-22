@@ -63,15 +63,17 @@ export default function Profile({
       <Toaster />
       {isEditCardVisible && <EditProfileCard />}
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
-        <div
-          className={
-            "w-30 h-30 rounded-full border bg-blue-300 flex items-center justify-center"
-          }
-        >
-          <Label className={"text-3xl font-bold"}>
-            {profileUser?.username[0]}
-          </Label>
-        </div>
+        {profileUser?.avatar ? <img src={profileUser?.avatar} alt="avatar" className={"w-30 h-30 rounded-full border object-cover"} />  :
+          <div
+            className={
+              "w-30 h-30 rounded-full border bg-blue-300 flex items-center justify-center"
+            }
+          >
+            <Label className={"text-3xl font-bold"}>
+              {profileUser?.username?.[0]}
+            </Label>
+          </div>
+        }
         <div className={"flex flex-col gap-3 max-w-130"}>
           <Label className={"text-2xl text-black font-bold"}>
             {profileUser?.username}
@@ -86,7 +88,7 @@ export default function Profile({
             <Label className={"text-xl"}>{profileBlog?.length} published</Label>
             <Label className={"text-xl"}>{followersLength} followers</Label>
             <Label className={"text-xl"}>
-              {profileUser?.following.length} following
+              {profileUser?.following?.length} following
             </Label>
           </div>
 
