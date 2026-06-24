@@ -11,6 +11,7 @@ import { toast, Toaster } from "sonner";
 import useSocialStore from "@/store/useSocialStore";
 import { useRouter } from "next/navigation";
 import EditProfileCard from "@/components/ui/EditProfileCard";
+import {ConnectionList} from "@/components/ui/ConnectionList";
 
 export default function Profile({
   params,
@@ -20,14 +21,17 @@ export default function Profile({
   const { username } = use(params);
   const { toggleFollowUser } = useSocialStore();
   const { getUserId, getUsername } = useAuthStore();
+  const { profileUser, profileBlog, fetchProfile,isEditCardVisible,toggleEditCard,isConnectionVisible,toggleConnection } = useProfileStore();
+
 
   const userId = getUserId();
 
-  const { profileUser, profileBlog, fetchProfile,isEditCardVisible,toggleEditCard } = useProfileStore();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
   const [followersLength, setFollowersLength] = useState<number>(0);
   const [isThisUserAccount, setIsThisUserAccount] = useState<boolean>();
+  const [activeTab,setActiveTab] = useState<string | null>(null);
+
   const router = useRouter();
 
   const handleFollowUser = async () => {
@@ -58,10 +62,18 @@ export default function Profile({
     setFollowersLength(profileUser.followers.length);
   }, [profileUser, userId]);
 
+  const handleDisplayConnection = (filter:string) => {
+    if(isThisUserAccount){
+      setActiveTab(filter)
+    }
+  }
+
   return (
     <div className="h-200 w-240 justify-self-center flex flex-col overflow-scroll">
       <Toaster />
       {isEditCardVisible && <EditProfileCard />}
+      {activeTab === "followers" && <ConnectionList isForFollowers={true} setActiveTab={setActiveTab} />}
+      {activeTab === "following" && <ConnectionList isForFollowers={false} setActiveTab={setActiveTab} />}
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
         {profileUser?.avatar ? <img src={profileUser?.avatar} alt="avatar" className={"w-30 h-30 rounded-full border object-cover"} />  :
           <div
@@ -86,8 +98,8 @@ export default function Profile({
         <div className={"flex items-center justify-between"}>
           <div className={"flex gap-4 text-gray-600"}>
             <Label className={"text-xl"}>{profileBlog?.length} published</Label>
-            <Label className={"text-xl"}>{followersLength} followers</Label>
-            <Label className={"text-xl"}>
+            <Label onClick={()=>handleDisplayConnection("followers")} className={"text-xl cursor-pointer"}>{followersLength} followers</Label>
+            <Label onClick={()=>handleDisplayConnection("following")} className={"text-xl cursor-pointer"}>
               {profileUser?.following?.length} following
             </Label>
           </div>

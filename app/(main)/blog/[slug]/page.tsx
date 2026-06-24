@@ -105,7 +105,7 @@ export default function BlogPage({
                 router.push(`/user-profile/${blog?.author.username}`)
               }
               className={
-                "w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center"
+                "w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center"
               }
             >
               <Label>{blog?.author.username[0]}</Label>

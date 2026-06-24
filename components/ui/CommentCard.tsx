@@ -43,7 +43,7 @@ const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
         {/* Left side */}
         <div className="flex gap-3">
           {/* Avatar */}
-          <div className="h-7 w-7 rounded-full bg-yellow-200 flex items-center justify-center">
+          <div className="h-7 w-7 rounded-full bg-blue-200 flex items-center justify-center">
             <Label className="font-bold">{comment.userId.username[0]}</Label>
           </div>
           {/* Username */}
