@@ -12,6 +12,7 @@ import useSocialStore from "@/store/useSocialStore";
 import { useRouter } from "next/navigation";
 import EditProfileCard from "@/components/ui/EditProfileCard";
 import {ConnectionList} from "@/components/ui/ConnectionList";
+import Image from "next/image";
 
 export default function Profile({
   params,
@@ -75,7 +76,7 @@ export default function Profile({
       {activeTab === "followers" && <ConnectionList isForFollowers={true} setActiveTab={setActiveTab} />}
       {activeTab === "following" && <ConnectionList isForFollowers={false} setActiveTab={setActiveTab} />}
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
-        {profileUser?.avatar ? <img src={profileUser?.avatar} alt="avatar" className={"w-30 h-30 rounded-full border object-cover"} />  :
+        {profileUser?.avatar ? <Image src={profileUser?.avatar} alt="avatar"  width={200} height={200} quality={100} className={"w-30 h-30 rounded-full border object-cover"} />  :
           <div
             className={
               "w-30 h-30 rounded-full border bg-blue-300 flex items-center justify-center"

@@ -10,6 +10,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { toast, Toaster } from "sonner";
 import Link from "next/link";
 import CommentCard from "@/components/ui/CommentCard";
+import Image from "next/image";
 
 export default function BlogPage({
   params,
@@ -105,10 +106,10 @@ export default function BlogPage({
                 router.push(`/user-profile/${blog?.author.username}`)
               }
               className={
-                "w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center"
+                "w-8 h-8 rounded-full cursor-pointer bg-blue-200 flex items-center justify-center"
               }
             >
-              <Label>{blog?.author.username[0]}</Label>
+              {blog?.author.avatar ? <Image src={blog?.author.avatar} alt="avatar" width={200} height={200} className={"w-8 h-8 rounded-full border object-cover"} /> : <Label>{blog?.author.username[0]}</Label>}
             </div>
             <Link
               href={`/user-profile/${blog?.author.username}`}
