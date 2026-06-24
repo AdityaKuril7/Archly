@@ -1,16 +1,17 @@
-import { Label } from "@/components/ui/label";
-import { MenuIcon, PenBox, Search, UserIcon } from "lucide-react";
+import {Label} from "@/components/ui/label";
+import {MenuIcon, PenBox, Search} from "lucide-react";
 import useUiStore from "@/store/useUiStore";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import {useEffect, useState} from "react";
+import {motion} from "framer-motion";
 import useBlogStore from "@/store/useBlogStore";
 import {usePathname} from "next/navigation";
+import {Button} from "@/components/ui/button";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
-  const { user, fetchMe } = useAuthStore();
+  const { user, fetchMe,isActive } = useAuthStore();
   const { searchBlogs, fetchAllBlogs } = useBlogStore();
   const [search, setSearch] = useState<string>("");
   const pathname = usePathname();
@@ -79,17 +80,19 @@ export default function Navbar() {
         </motion.div>
 
         {/* Avatar */}
-        <Link href={`/user-profile/${user?.username}`}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className={
-              "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
-            }
-          >
-            <Label>{user?.username[0]}</Label>
-            {/* <UserIcon /> */}
-          </motion.div>
-        </Link>
+        {!isActive ? <Link href={"/auth"}><Button>Log in</Button></Link> :
+          <Link href={`/user-profile/${user?.username}`}>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              className={
+                "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
+              }
+            >
+              <Label>{user?.username[0]}</Label>
+              {/* <UserIcon /> */}
+            </motion.div>
+          </Link>
+        }
       </div>
     </nav>
   );
