@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import {IUpdateUser} from "@/types/user.types";
 import {toast} from "sonner";
+import Image from "next/image";
 
 export default function EditProfileCard() {
   const {toggleEditCard,updateProfile} = useProfileStore()
@@ -74,16 +75,16 @@ export default function EditProfileCard() {
 
   return (
     <div className={'h-screen w-screen backdrop-blur-md bg-black/50 absolute top-0 left-0 flex items-center justify-center'}>
-      <Card className={'w-100 h-auto p-5 bg-white z-51 flex flex-col items-center rounded-xl gap-4 '}>
+      <Card className={'w-100 h-auto px-7 py-10 bg-white z-51 flex flex-col items-center rounded-xl gap-4 '}>
         <Label className={'text-2xl font-bold'}>Edit Profile</Label>
 
         {/* Select Avatar */}
-        <div onClick={selectImage} className={'h-25 w-25 border rounded-full flex items-center justify-center  border-2 border-black/50'}>
-          {avatarPreview ? <img src={avatarPreview} alt="avatar" className={'h-full w-full object-cover rounded-full'}/> : <ImageIcon size={40} />}
+        <div onClick={selectImage} className={'h-25 w-25 border rounded-full flex items-center justify-center  border-gray-200'}>
+          {avatarPreview ? <Image src={avatarPreview} alt="avatar" width={50} height={50} className={'h-full w-full object-cover rounded-full'}/> : <ImageIcon size={40} />}
         </div>
 
         {/* Username */}
-        <textarea value={bio} onChange={e => setBio(e.target.value)}  className={'w-full border-2 border-black/50 h-25 rounded-xl p-4 resize-none px-5'} placeholder={'Bio'} />
+        <textarea value={bio} onChange={e => setBio(e.target.value)}  className={'w-full border border-gray-200 h-25 rounded-xl p-4 resize-none px-5'} placeholder={'Bio'} />
         <Button disabled={loading} onClick={handleUpdateProfile} className={'w-full h-12'}>Update</Button>
         <Button disabled={loading} onClick={toggleEditCard} className={'w-full h-12'} variant={'destructive'}>Cancel</Button>
         {loading && "Uploading Please wait..."}
