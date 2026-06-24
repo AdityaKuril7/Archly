@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import {deleteToken} from "@/app/action";
 
 export default function Sidebar() {
-  const { user, fetchMe,logout } = useAuthStore();
+  const { user, fetchMe } = useAuthStore();
   useEffect(() => {
     fetchMe();
   }, []);
@@ -53,7 +53,7 @@ export default function Sidebar() {
   ];
 
   const handleLogout = async () => {
-    logout();
+    await deleteToken();
     window.location.href = "/auth";
   }
 

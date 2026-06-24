@@ -6,16 +6,18 @@ import useAuthStore from "@/store/useAuthStore";
 import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import useBlogStore from "@/store/useBlogStore";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Navbar() {
   const { toggleSidebar } = useUiStore();
-  const { user, fetchMe,isActive } = useAuthStore();
+  const { user, fetchMe } = useAuthStore();
   const { searchBlogs, fetchAllBlogs } = useBlogStore();
   const [search, setSearch] = useState<string>("");
   const pathname = usePathname();
   const isHomepage = pathname === "/";
+  const router = useRouter();
 
   useEffect(() => {
     fetchMe();
@@ -80,18 +82,20 @@ export default function Navbar() {
         </motion.div>
 
         {/* Avatar */}
-        {!isActive ? <Link href={"/auth"}><Button>Log in</Button></Link> :
-          <Link href={`/user-profile/${user?.username}`}>
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className={
-                "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
-              }
-            >
-              <Label>{user?.username[0]}</Label>
-              {/* <UserIcon /> */}
-            </motion.div>
-          </Link>
+        {
+          user?.avatar ?
+            <Image onClick={()=>router.push(`/user-profile/${user.username}`)} src={user?.avatar} alt={user?.username} width={200} height={200} className={'w-10 h-10 rounded-full cursor-pointer hover:rotate-10 transition-all duration-500 hover:scale-105 object-cover'}/>
+            : <Link href={`/user-profile/${user?.username}`}>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className={
+                  "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
+                }
+              >
+                <Label>{user?.username[0]}</Label>
+                {/* <UserIcon /> */}
+              </motion.div>
+            </Link>
         }
       </div>
     </nav>

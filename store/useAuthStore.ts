@@ -5,12 +5,11 @@ import {
   ISignupUserSchema,
 } from "@/types/user.types";
 import { api } from "@/lib/api";
-import { Axios, AxiosError } from "axios";
+import { AxiosError } from "axios";
 import {deleteToken} from "@/app/action";
 
 interface AuthStore {
   loading: boolean;
-  isActive:boolean;
   user: ILoggedUserSchema | null;
   signup: (
     data: ISignupUserSchema,
@@ -19,13 +18,11 @@ interface AuthStore {
   fetchMe: () => void;
   getUserId: () => string | null;
   getUsername: () => string | null;
-  logout: () => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
+const useAuthStore = create<AuthStore>((set,get) => ({
   loading: false,
   user: null,
-  isActive:false,
   signup: async (data: ISignupUserSchema) => {
     try {
       set({ loading: true });
@@ -63,7 +60,7 @@ const useAuthStore = create<AuthStore>((set) => ({
 
       const response = await api.post("/auth/login/", data);
       if (response.status === 200) {
-        set({ loading: false,isActive:true });
+        set({ loading: false });
 
         return {
           success: true,
@@ -123,10 +120,6 @@ const useAuthStore = create<AuthStore>((set) => ({
     const username: string | null = localStorage.getItem("username");
     return username;
   },
-  logout: async () => {
-    await deleteToken();
-    set({isActive:false})
-  }
 }));
 
 export default useAuthStore;
