@@ -17,6 +17,7 @@ export async function GET(
     const blog = await Blog.find({ slug: slug })
       .populate({
         path: "comments",
+        options: {sort: { createdAt: -1}},
         populate: { path: "userId", select: "username" },
       })
       .populate(
