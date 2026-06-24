@@ -19,6 +19,7 @@ export interface IBlogModel {
 interface IAuthorSchema {
   _id: string;
   username: string;
+  avatar:string;
   email: string;
   gender: "male" | "female" | "other";
   followers: string[];

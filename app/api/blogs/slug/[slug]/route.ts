@@ -21,7 +21,7 @@ export async function GET(
       })
       .populate(
         "author",
-        "username email gender savedBlogs followers following",
+        "username email gender savedBlogs followers following avatar",
       );
     if (blog?.length == 0 || blog === null) {
       return ErrorHandler("No blogs found", 200);

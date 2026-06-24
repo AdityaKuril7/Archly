@@ -66,7 +66,7 @@ export default function EditProfileCard() {
       toggleEditCard()
       toast.info("Profile updated successfully")
       setLoading(false)
-
+      window.location.reload()
     }
     setLoading(false)
 
