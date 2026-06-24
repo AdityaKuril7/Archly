@@ -6,7 +6,6 @@ import {
 } from "@/types/user.types";
 import { api } from "@/lib/api";
 import { AxiosError } from "axios";
-import {deleteToken} from "@/app/action";
 
 interface AuthStore {
   loading: boolean;
@@ -20,7 +19,7 @@ interface AuthStore {
   getUsername: () => string | null;
 }
 
-const useAuthStore = create<AuthStore>((set,get) => ({
+const useAuthStore = create<AuthStore>((set) => ({
   loading: false,
   user: null,
   signup: async (data: ISignupUserSchema) => {

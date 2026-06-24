@@ -6,10 +6,9 @@ import {
   BadgeCheck,
   Bookmark,
   EyeIcon,
-  Hand,
   Heart,
   MessageCircle,
-  MoreHorizontal, Share2,
+  Share2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";

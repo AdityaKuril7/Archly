@@ -18,7 +18,7 @@ export default function Sidebar() {
   const { user, fetchMe } = useAuthStore();
   useEffect(() => {
     fetchMe();
-  }, []);
+  }, [fetchMe]);
   const sideBarOptions = [
     {
       title: "Home",

@@ -7,7 +7,6 @@ import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import useBlogStore from "@/store/useBlogStore";
 import {usePathname, useRouter} from "next/navigation";
-import {Button} from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -21,7 +20,7 @@ export default function Navbar() {
 
   useEffect(() => {
     fetchMe();
-  }, []);
+  }, [fetchMe]);
 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

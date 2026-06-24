@@ -48,7 +48,7 @@ export default function BlogPage({
       toast.info(message);
       const userId = getUserId();
       if (!userId) return;
-      fetchBlog(blog?.slug as string, userId);
+      await fetchBlog(blog?.slug as string, userId);
       setUserComment("");
     }
   };
@@ -155,7 +155,7 @@ export default function BlogPage({
 
       <main className="min-h-screen w-full p-5">
         <div
-          className="prose max-w-none border-b-2 pb-5 text-[20px] font-serif break-words hyphens-none"
+          className="prose max-w-none border-b-2 pb-5 text-[20px] font-serif wrap-break-word hyphens-none"
           dangerouslySetInnerHTML={{ __html: blog?.content || "Not Specified" }}
         />
 
@@ -184,9 +184,9 @@ export default function BlogPage({
 
         <div className="w-full h-auto flex flex-col items-center">
           {blog?.comments.length === 0 ? (
-            <Label className="slef-center text-3xl">Be a first commenter</Label>
+            <Label className="slef-center text-2xl">💬 No comments yet</Label>
           ) : (
-            blog?.comments.map((comment, index) => (
+            blog?.comments.map((comment) => (
               <CommentCard
                 key={comment._id}
                 blogSlug={blog.slug}
