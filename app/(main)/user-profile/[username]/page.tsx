@@ -43,13 +43,13 @@ export default function Profile({
   const router = useRouter();
 
   const handleFollowUser = async () => {
-    const followerId = userId;
-    const followingId = profileUser?._id;
-    if (!followerId) {
+    const currentUser = userId;
+    const targetUserId = profileUser?._id;
+    if (!currentUser) {
       toast.info("You need to login first");
       return;
     }
-    const result = await toggleFollowUser(followerId, followingId!);
+    const result = await toggleFollowUser(targetUserId!);
     const isNowFollowing = !viewerAlreadyFollow;
     setViewerAlreadyFollow(isNowFollowing);
     toast.info(result.message);

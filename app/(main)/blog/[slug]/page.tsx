@@ -29,13 +29,13 @@ export default function BlogPage({
   const [userComment, setUserComment] = useState<string>("");
 
   const handleFollowUser = async () => {
-    const followerId = getUserId();
-    const followingId = blog?.author._id;
-    if (!followerId) {
+    const currentUser = getUserId();
+    const targetUserId = blog?.author._id;
+    if (!currentUser) {
       toast.info("You need to login first");
       return;
     }
-    const result = await toggleFollowUser(followerId, followingId!);
+    const result = await toggleFollowUser(targetUserId!);
     const isNowFollowing = !viewerAlreadyFollow;
     setViewerAlreadyFollow(isNowFollowing);
     toast.info(result.message);
@@ -109,7 +109,17 @@ export default function BlogPage({
                 "w-8 h-8 rounded-full cursor-pointer bg-blue-200 flex items-center justify-center"
               }
             >
-              {blog?.author.avatar ? <Image src={blog?.author.avatar} alt="avatar" width={200} height={200} className={"w-8 h-8 rounded-full border object-cover"} /> : <Label>{blog?.author.username[0]}</Label>}
+              {blog?.author.avatar ? (
+                <Image
+                  src={blog?.author.avatar}
+                  alt="avatar"
+                  width={200}
+                  height={200}
+                  className={"w-8 h-8 rounded-full border object-cover"}
+                />
+              ) : (
+                <Label>{blog?.author.username[0]}</Label>
+              )}
             </div>
             <Link
               href={`/user-profile/${blog?.author.username}`}

@@ -10,9 +10,14 @@ export function ConnectionList({isForFollowers,setActiveTab}:{isForFollowers:boo
   const {connections,fetchConnections,loading} = useProfileStore()
   const listKey = isForFollowers ? "followers" : "following"
 
+
+
   useEffect(() => {
     fetchConnections(isForFollowers ? "followers" : "following")
   }, []);
+
+
+
 
   return(
     <div className={'h-screen w-screen bg-black/30 absolute top-0 left-0 backdrop-blur-md flex items-center justify-center'}>

@@ -4,8 +4,7 @@ import { create } from "zustand";
 
 interface SocialStore {
   toggleFollowUser: (
-    followerId: string,
-    followingId: string,
+    targetUserId: string,
   ) => Promise<{ success: boolean; message: string }>;
   uploadComment: (
     blogId: string,
@@ -15,11 +14,10 @@ interface SocialStore {
 }
 
 const useSocialStore = create<SocialStore>((set) => ({
-  toggleFollowUser: async (followerId: string, followingId: string) => {
+  toggleFollowUser: async (targetUserId: string) => {
     try {
       const response = await api.post("/users/follow", {
-        followerId,
-        followingId,
+        targetUserId,
       });
       if (response.status === 200) {
         return {
