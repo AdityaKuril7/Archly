@@ -1,3 +1,4 @@
+import connectDb from "@/lib/db";
 import { ErrorHandler } from "@/lib/errorHandler";
 import { verifyToken } from "@/lib/verifyauth";
 import User from "@/models/user.model";
@@ -5,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+    await connectDb();
     const { id: currentUser } = await verifyToken(req);
     const { targetUserId } = await req.json();
 
