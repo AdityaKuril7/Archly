@@ -17,20 +17,28 @@ export default function ListItems({
   user: IConnectionUser;
   isForFollowers: boolean;
 }) {
-  const { toggleFollowUser } = useSocialStore();
+  const { toggleFollowUser, removeFollower } = useSocialStore();
   const { fetchConnections, fetchProfile } = useProfileStore();
   const { getUsername } = useAuthStore();
   const toggleFollow = async () => {
-    const { success, message } = await toggleFollowUser(user._id);
+    const { success } = await toggleFollowUser(user._id);
     if (success) {
       fetchConnections("following");
-      const username = await getUsername();
+      const username = getUsername();
       if (!username) return;
       fetchProfile(username);
     }
   };
 
-  const handleRemoveUser = async () => {};
+  const handleRemoveUser = async () => {
+    const { success } = await removeFollower(user._id);
+    if (success) {
+      fetchConnections("followers");
+      const username = getUsername();
+      if (!username) return;
+      fetchProfile(username);
+    }
+  };
 
   return (
     <div className={"h-20 border-b  w-full flex items-center justify-between"}>

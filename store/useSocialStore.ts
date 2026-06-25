@@ -11,6 +11,9 @@ interface SocialStore {
     content: string,
   ) => Promise<{ success: boolean; message: string }>;
   deleteComment: (commentId: string, blogId: string) => Promise<boolean>;
+  removeFollower: (
+    targetUserId: string,
+  ) => Promise<{ success: boolean; message: string }>;
 }
 
 const useSocialStore = create<SocialStore>((set) => ({
@@ -85,6 +88,36 @@ const useSocialStore = create<SocialStore>((set) => ({
       return false;
     } catch (e) {
       return false;
+    }
+  },
+  removeFollower: async (targetUserId: string) => {
+    try {
+      const response = await api.post("/users/remove-follower", {
+        targetUserId,
+      });
+      if (response.status === 200) {
+        return {
+          success: true,
+          message: response.data.message,
+        };
+      } else {
+        return {
+          success: false,
+          message: response.data.message,
+        };
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        return {
+          success: true,
+          message: e.response?.data.message,
+        };
+      } else {
+        return {
+          success: true,
+          message: "Something went wrong",
+        };
+      }
     }
   },
 }));
