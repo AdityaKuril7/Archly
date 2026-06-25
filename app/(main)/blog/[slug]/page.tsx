@@ -153,9 +153,17 @@ export default function BlogPage({
         </div>
         <div className={"w-full overflow-hidden rounded-lg"}>
           <motion.img
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            initial={{
+              opacity: 0,
+              filter: "blur(10px)",
+              scale: 1.05,
+            }}
+            animate={{
+              opacity: 1,
+              filter: "blur(0px)",
+              scale: 1,
+            }}
+            transition={{ duration: 0.8 }}
             src={blog?.image}
             alt="blog"
             className={"w-full h-auto rounded-lg"}
