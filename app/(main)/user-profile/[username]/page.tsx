@@ -11,7 +11,7 @@ import { toast, Toaster } from "sonner";
 import useSocialStore from "@/store/useSocialStore";
 import { useRouter } from "next/navigation";
 import EditProfileCard from "@/components/ui/EditProfileCard";
-import {ConnectionList} from "@/components/ui/ConnectionList";
+import { ConnectionList } from "@/components/ui/ConnectionList";
 import Image from "next/image";
 
 export default function Profile({
@@ -22,8 +22,15 @@ export default function Profile({
   const { username } = use(params);
   const { toggleFollowUser } = useSocialStore();
   const { getUserId, getUsername } = useAuthStore();
-  const { profileUser, profileBlog, fetchProfile,isEditCardVisible,toggleEditCard,isConnectionVisible,toggleConnection } = useProfileStore();
-
+  const {
+    profileUser,
+    profileBlog,
+    fetchProfile,
+    isEditCardVisible,
+    toggleEditCard,
+    isConnectionVisible,
+    toggleConnection,
+  } = useProfileStore();
 
   const userId = getUserId();
 
@@ -31,7 +38,7 @@ export default function Profile({
     useState<boolean>(false);
   const [followersLength, setFollowersLength] = useState<number>(0);
   const [isThisUserAccount, setIsThisUserAccount] = useState<boolean>();
-  const [activeTab,setActiveTab] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -63,20 +70,33 @@ export default function Profile({
     setFollowersLength(profileUser.followers.length);
   }, [profileUser, userId]);
 
-  const handleDisplayConnection = (filter:string) => {
-    if(isThisUserAccount){
-      setActiveTab(filter)
+  const handleDisplayConnection = (filter: string) => {
+    if (isThisUserAccount) {
+      setActiveTab(filter);
     }
-  }
+  };
 
   return (
     <div className="h-200 w-240 justify-self-center flex flex-col overflow-scroll">
       <Toaster />
       {isEditCardVisible && <EditProfileCard />}
-      {activeTab === "followers" && <ConnectionList isForFollowers={true} setActiveTab={setActiveTab} />}
-      {activeTab === "following" && <ConnectionList isForFollowers={false} setActiveTab={setActiveTab} />}
+      {activeTab === "followers" && (
+        <ConnectionList isForFollowers={true} setActiveTab={setActiveTab} />
+      )}
+      {activeTab === "following" && (
+        <ConnectionList isForFollowers={false} setActiveTab={setActiveTab} />
+      )}
       <header className={"h-auto flex flex-col gap-5 border-b-2 pb-5 p-5"}>
-        {profileUser?.avatar ? <Image src={profileUser?.avatar} alt="avatar"  width={200} height={200} quality={100} className={"w-30 h-30 rounded-full border object-cover"} />  :
+        {profileUser?.avatar ? (
+          <Image
+            src={profileUser?.avatar}
+            alt="avatar"
+            width={200}
+            height={200}
+            quality={100}
+            className={"w-30 h-30 rounded-full border object-cover"}
+          />
+        ) : (
           <div
             className={
               "w-30 h-30 rounded-full border bg-blue-300 flex items-center justify-center"
@@ -86,7 +106,7 @@ export default function Profile({
               {profileUser?.username?.[0]}
             </Label>
           </div>
-        }
+        )}
         <div className={"flex flex-col gap-3 max-w-130"}>
           <Label className={"text-2xl text-black font-bold"}>
             {profileUser?.username}
@@ -99,8 +119,16 @@ export default function Profile({
         <div className={"flex items-center justify-between"}>
           <div className={"flex gap-4 text-gray-600"}>
             <Label className={"text-xl"}>{profileBlog?.length} published</Label>
-            <Label onClick={()=>handleDisplayConnection("followers")} className={"text-xl cursor-pointer"}>{followersLength} followers</Label>
-            <Label onClick={()=>handleDisplayConnection("following")} className={"text-xl cursor-pointer"}>
+            <Label
+              onClick={() => handleDisplayConnection("followers")}
+              className={"text-xl cursor-pointer"}
+            >
+              {followersLength} followers
+            </Label>
+            <Label
+              onClick={() => handleDisplayConnection("following")}
+              className={"text-xl cursor-pointer"}
+            >
               {profileUser?.following?.length} following
             </Label>
           </div>
@@ -111,10 +139,12 @@ export default function Profile({
                 {viewerAlreadyFollow ? "Unfollow" : "Follow"}
               </Button>
             )}
-            <Button onClick={toggleEditCard} variant={"outline"}>
-              <PenBox />
-              Edit Profile
-            </Button>
+            {isThisUserAccount && (
+              <Button onClick={toggleEditCard} variant={"outline"}>
+                <PenBox />
+                Edit Profile
+              </Button>
+            )}
           </div>
         </div>
       </header>
