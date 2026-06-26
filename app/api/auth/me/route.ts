@@ -5,9 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    
     const decoded = await verifyToken(req);
-    if(!decoded) return
+    if (!decoded) return;
 
     const user = await User.findById(decoded?.id).select("-password");
 

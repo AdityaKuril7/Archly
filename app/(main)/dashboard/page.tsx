@@ -22,9 +22,9 @@ const InfoCard = ({
 
 const Dashboard = () => {
   const { getUsername } = useAuthStore();
-  const { blogs, fetchDashboardBlogs, toggleVisiblity,deleteBlog } = useDashboardStore();
+  const { blogs, fetchDashboardBlogs, toggleVisiblity, deleteBlog } =
+    useDashboardStore();
   const username = getUsername();
-
 
   const totalLikes = blogs?.reduce(
     (total, blog) => total + blog.likes.length,
@@ -53,10 +53,10 @@ const Dashboard = () => {
 
   const handleDeleteBlog = async (id: string) => {
     const result = await deleteBlog(id);
-    if (result){
+    if (result) {
       fetchDashboardBlogs(username || "");
     }
-  }
+  };
 
   return (
     <div className="justify-self-center w-240 flex flex-col items-center ">
@@ -107,7 +107,7 @@ const Dashboard = () => {
                     onClickChangeVisibility={() =>
                       handleOnChangeVisiblity(blog._id, blog.status)
                     }
-                    onClickDelete={()=> handleDeleteBlog(blog._id)}
+                    onClickDelete={() => handleDeleteBlog(blog._id)}
                   />
                 ))}
               </tbody>

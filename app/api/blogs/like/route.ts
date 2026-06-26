@@ -19,7 +19,9 @@ export async function POST(req: NextRequest) {
     if (blog.likes.includes(decoded.id)) {
       await Blog.findByIdAndUpdate(blogId, { $pull: { likes: decoded.id } });
     } else {
-      await Blog.findByIdAndUpdate(blogId, { $addToSet: { likes: decoded.id } });
+      await Blog.findByIdAndUpdate(blogId, {
+        $addToSet: { likes: decoded.id },
+      });
     }
 
     if (!blog) return ErrorHandler("Blog not found", 404);

@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
-import {deleteToken} from "@/app/action";
+import { deleteToken } from "@/app/action";
 
 export default function Sidebar() {
   const { user, fetchMe } = useAuthStore();
@@ -55,7 +55,7 @@ export default function Sidebar() {
   const handleLogout = async () => {
     await deleteToken();
     window.location.href = "/auth";
-  }
+  };
 
   return (
     <motion.div
@@ -68,7 +68,11 @@ export default function Sidebar() {
       }
     >
       {sideBarOptions.map((option, index) => (
-        <motion.div onClick={()=> option.title === "Logout" && handleLogout()} key={index} whileHover={{ scale: 1.1, translateX: 10 }}>
+        <motion.div
+          onClick={() => option.title === "Logout" && handleLogout()}
+          key={index}
+          whileHover={{ scale: 1.1, translateX: 10 }}
+        >
           <Link
             href={option.link}
             key={index}

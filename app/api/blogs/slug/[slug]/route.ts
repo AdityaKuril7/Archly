@@ -17,7 +17,7 @@ export async function GET(
     const blog = await Blog.find({ slug: slug })
       .populate({
         path: "comments",
-        options: {sort: { createdAt: -1}},
+        options: { sort: { createdAt: -1 } },
         populate: { path: "userId", select: "username" },
       })
       .populate(
@@ -39,7 +39,7 @@ export async function GET(
     });
   } catch (err) {
     if (err instanceof Error) {
-      return ErrorHandler(err.message,401);
+      return ErrorHandler(err.message, 401);
     }
   }
 }

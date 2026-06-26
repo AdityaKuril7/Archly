@@ -1,12 +1,12 @@
-import {Label} from "@/components/ui/label";
-import {MenuIcon, PenBox, Search} from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { MenuIcon, PenBox, Search } from "lucide-react";
 import useUiStore from "@/store/useUiStore";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
-import {useEffect, useState} from "react";
-import {motion} from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import useBlogStore from "@/store/useBlogStore";
-import {usePathname, useRouter} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -21,7 +21,6 @@ export default function Navbar() {
   useEffect(() => {
     fetchMe();
   }, [fetchMe]);
-
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -50,24 +49,23 @@ export default function Navbar() {
           </motion.div>
           <Label className={"text-2xl font-black"}>Archly</Label>
         </div>
-        {isHomepage &&
-            <div
-                className={
-                  "w-70 bg-gray-100/80 flex  items-center p-3 gap-3 rounded-full"
-                }
-            >
-                <Search />
-                <input
-                    value={search}
-                    onChange={handleChange}
-                    onKeyDown={(e) => handleKeyDown(e)}
-                    type="text"
-                    placeholder={"search"}
-                    className={"w-full h-full focus:outline-none"}
-                />
-            </div>
-        }
-
+        {isHomepage && (
+          <div
+            className={
+              "w-70 bg-gray-100/80 flex  items-center p-3 gap-3 rounded-full"
+            }
+          >
+            <Search />
+            <input
+              value={search}
+              onChange={handleChange}
+              onKeyDown={(e) => handleKeyDown(e)}
+              type="text"
+              placeholder={"search"}
+              className={"w-full h-full focus:outline-none"}
+            />
+          </div>
+        )}
       </div>
       <div className={"h-full w-auto flex items-center gap-5"}>
         <motion.div
@@ -81,21 +79,30 @@ export default function Navbar() {
         </motion.div>
 
         {/* Avatar */}
-        {
-          user?.avatar ?
-            <Image onClick={()=>router.push(`/user-profile/${user.username}`)} src={user?.avatar} alt={user?.username} width={200} height={200} className={'w-10 h-10 rounded-full cursor-pointer hover:rotate-10 transition-all duration-500 hover:scale-105 object-cover'}/>
-            : <Link href={`/user-profile/${user?.username}`}>
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className={
-                  "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
-                }
-              >
-                <Label>{user?.username[0]}</Label>
-                {/* <UserIcon /> */}
-              </motion.div>
-            </Link>
-        }
+        {user?.avatar ? (
+          <Image
+            onClick={() => router.push(`/user-profile/${user.username}`)}
+            src={user?.avatar}
+            alt={user?.username}
+            width={200}
+            height={200}
+            className={
+              "w-10 h-10 rounded-full cursor-pointer hover:rotate-10 transition-all duration-500 hover:scale-105 object-cover"
+            }
+          />
+        ) : (
+          <Link href={`/user-profile/${user?.username}`}>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              className={
+                "h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center cursor-pointer"
+              }
+            >
+              <Label>{user?.username[0]}</Label>
+              {/* <UserIcon /> */}
+            </motion.div>
+          </Link>
+        )}
       </div>
     </nav>
   );

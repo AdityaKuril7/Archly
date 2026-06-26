@@ -62,7 +62,7 @@ export async function DELETE(
     );
   } catch (err) {
     if (err instanceof Error) {
-      return ErrorHandler(err.message,400);
+      return ErrorHandler(err.message, 400);
     }
   }
 }

@@ -1,13 +1,12 @@
-import {ErrorHandler} from "@/lib/errorHandler";
+import { ErrorHandler } from "@/lib/errorHandler";
 import User from "@/models/user.model";
-import {NextRequest, NextResponse} from "next/server";
-import {verifyToken} from "@/lib/verifyauth";
+import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "@/lib/verifyauth";
 
 export async function POST(req: NextRequest) {
   try {
-
-    const {id} = await verifyToken(req)
-    if(!id) return ErrorHandler("Unauthorized",401)
+    const { id } = await verifyToken(req);
+    if (!id) return ErrorHandler("Unauthorized", 401);
 
     const blogs = await User.findById(id)
       .select("savedBlogs")

@@ -43,7 +43,9 @@ export default function TableRow({
 
       <td className="px-6 py-4 text-right font-medium">{blog?.likes.length}</td>
 
-      <td className="px-6 py-4 text-right font-medium">{blog?.viewedBy.length}</td>
+      <td className="px-6 py-4 text-right font-medium">
+        {blog?.viewedBy.length}
+      </td>
 
       <td className="px-6 py-4 text-center">
         <DropdownMenu>
@@ -60,7 +62,9 @@ export default function TableRow({
                 : "Published This Blog"}
             </DropdownMenuItem>
 
-            <DropdownMenuItem variant="destructive" onClick={onClickDelete}>Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={onClickDelete}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </td>

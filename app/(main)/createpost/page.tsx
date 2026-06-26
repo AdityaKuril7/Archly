@@ -79,16 +79,15 @@ const CreatePostPage = () => {
       const { success, message } = await addBlog(newBlog);
       toast.info(message);
 
-      if(success){
-        setImageUrl(null)
-        setExcerpt("")
-        setContent("")
-        setTitle("")
-        setCategory("")
-        setImageFile(null)
-        setImagePreview(null)
+      if (success) {
+        setImageUrl(null);
+        setExcerpt("");
+        setContent("");
+        setTitle("");
+        setCategory("");
+        setImageFile(null);
+        setImagePreview(null);
       }
-
     } catch (err) {
       console.error("Upload failed:", err);
     } finally {

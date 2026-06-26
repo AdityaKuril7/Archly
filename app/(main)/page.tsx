@@ -1,6 +1,6 @@
 "use client";
 import BlogCard from "@/components/ui/BlogCard";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import useBlogStore from "@/store/useBlogStore";
 
 export default function Home() {
