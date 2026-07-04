@@ -14,6 +14,7 @@ interface SocialStore {
   removeFollower: (
     targetUserId: string,
   ) => Promise<{ success: boolean; message: string }>;
+  toggleLikeComment: (commentId: string) => void;
 }
 
 const useSocialStore = create<SocialStore>((set) => ({
@@ -117,6 +118,15 @@ const useSocialStore = create<SocialStore>((set) => ({
           success: true,
           message: "Something went wrong",
         };
+      }
+    }
+  },
+  toggleLikeComment: async (commentId: string) => {
+    try {
+      await api.post(`/comment/${commentId}/like`);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log(e.message);
       }
     }
   },

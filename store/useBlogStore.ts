@@ -10,7 +10,7 @@ interface BlogStore {
   savedBlogs: IBlogSchema[] | null;
   userBlogs: IBlogSchema[] | null;
   fetchAllBlogs: () => void;
-  fetchBlog: (slug: string, userId: string) => Promise<boolean>;
+  fetchBlog: (slug: string) => Promise<boolean>;
   toggleLike: (blogId: string) => Promise<boolean>;
   addBlog: (
     data: AddBlogSchema,

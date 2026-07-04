@@ -1,21 +1,16 @@
 import { IComment } from "@/types/blog.types";
 import { Label } from "./label";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heart, MenuIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import useSocialStore from "@/store/useSocialStore";
 import useBlogStore from "@/store/useBlogStore";
 import useAuthStore from "@/store/useAuthStore";
-import { toast } from "sonner";
 
 interface CommentCardProps {
   comment: IComment;
@@ -23,17 +18,24 @@ interface CommentCardProps {
 }
 
 const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
-  const { deleteComment } = useSocialStore();
+  const { deleteComment, toggleLikeComment } = useSocialStore();
   const { fetchBlog } = useBlogStore();
   const { getUserId } = useAuthStore();
   const userId = getUserId();
+  const [isUserLike, setIsUserLike] = useState<boolean>(
+    userId ? comment.likes.includes(userId) : false,
+  );
   const handleDeleteComment = async (commentId: string) => {
     const result = await deleteComment(commentId, comment.blogId);
     if (result) {
-      if (!userId) return toast.info("Something went wrong");
-
-      fetchBlog(blogSlug, userId);
+      fetchBlog(blogSlug);
     }
+  };
+
+  const handleLikeComment = () => {
+    toggleLikeComment(comment._id);
+    setIsUserLike(!isUserLike);
+    fetchBlog(blogSlug);
   };
 
   return (
@@ -68,7 +70,11 @@ const CommentCard = ({ comment, blogSlug }: CommentCardProps) => {
       {/* Footer actions */}
       <div className="flex w-full items-center justify-between">
         <div className="flex gap-2 items-center">
-          <Heart size={20} />
+          <Heart
+            onClick={handleLikeComment}
+            className={`${isUserLike && "fill-red-500 text-red-500"}`}
+            size={20}
+          />
           <span className="text-xl">{comment.likes.length}</span>
         </div>
         <div>
