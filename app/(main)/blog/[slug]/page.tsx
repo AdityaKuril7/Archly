@@ -48,7 +48,7 @@ export default function BlogPage({
       toast.info(message);
       const userId = getUserId();
       if (!userId) return;
-      await fetchBlog(blog?.slug as string, userId);
+      await fetchBlog(blog?.slug as string);
       setUserComment("");
     }
   };
@@ -57,7 +57,7 @@ export default function BlogPage({
     const userId = getUserId();
     if (!userId) return;
 
-    const result = await fetchBlog(slug, userId);
+    const result = await fetchBlog(slug);
 
     if (!result) {
       router.push("/auth");
