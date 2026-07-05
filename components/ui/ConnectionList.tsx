@@ -37,19 +37,34 @@ export function ConnectionList({
           </Button>
         </div>
 
-        <div className={"flex flex-col mt-3 overflow-scroll "}>
+        <div className="flex flex-col mt-3 overflow-scroll">
           {loading ? (
             <Label>Loading...</Label>
           ) : (
-            connections?.flatMap((conn) =>
-              conn[listKey]?.map((user, index) => (
+            connections?.flatMap((conn) => {
+              const users = conn[listKey];
+
+              if (!users || users.length === 0) {
+                return (
+                  <p
+                    key={conn._id}
+                    className="text-center text-gray-500 line-clamp-2"
+                  >
+                    {isForFollowers
+                      ? "No followers yet. Share your profile to grow your audience!"
+                      : "You're not following anyone yet. Start exploring and follow people!"}
+                  </p>
+                );
+              }
+
+              return users.map((user) => (
                 <ListItems
                   key={user._id}
                   user={user}
                   isForFollowers={isForFollowers}
                 />
-              )),
-            )
+              ));
+            })
           )}
         </div>
       </div>
