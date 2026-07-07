@@ -28,8 +28,6 @@ export default function Profile({
     fetchProfile,
     isEditCardVisible,
     toggleEditCard,
-    isConnectionVisible,
-    toggleConnection,
   } = useProfileStore();
 
   const userId = getUserId();
