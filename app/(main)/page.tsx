@@ -16,15 +16,15 @@ export default function Home() {
       }
     >
       <div className={"w-200 h-full grid-cols-1 overflow-scroll py-10"}>
-        {blogs?.length === 0 ? (
+        {blogs ? (
+          blogs?.map((blog, index) => <BlogCard key={index} blog={blog} />)
+        ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-lg font-semibold text-gray-700">No posts yet</p>
-            <p className="text-gray-500 mt-1">
+            <p className="text-2xl font-black text-black">No posts yet</p>
+            <p className="text-gray-500 text-xl mt-1">
               Be the first one to share your story!
             </p>
           </div>
-        ) : (
-          blogs?.map((blog, index) => <BlogCard key={index} blog={blog} />)
         )}
       </div>
     </div>
