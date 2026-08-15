@@ -81,7 +81,7 @@ export default function BlogPage({
   return (
     <div
       className={
-        "w-200 h-[90vh]  justify-self-center font-serif flex flex-col items-center overflow-scroll"
+        "w-200 h-[90vh] justify-self-center flex flex-col items-center overflow-scroll"
       }
     >
       <Toaster />
@@ -173,7 +173,7 @@ export default function BlogPage({
 
       <main className="min-h-screen w-full p-5">
         <div
-          className="prose max-w-none border-b-2 pb-5 text-[20px] font-serif wrap-break-word hyphens-none"
+          className="prose max-w-none border-b-2 pb-5 text-[20px] wrap-break-word hyphens-none"
           dangerouslySetInnerHTML={{ __html: blog?.content || "Not Specified" }}
         />
 
