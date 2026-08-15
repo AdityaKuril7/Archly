@@ -147,9 +147,15 @@ export default function Profile({
         </div>
       </header>
       <div className={"w-full h-full grid grid-cols-1 p-5 py-10"}>
-        {profileBlog?.map((blog, index) => (
-          <BlogCard key={index} blog={blog} />
-        ))}
+        {!profileBlog || profileBlog.length === 0 ? (
+          <div className={"w-full h-full flex items-center justify-center"}>
+            <Label className={"text-gray-600 text-xl"}>
+              No blogs published yet
+            </Label>
+          </div>
+        ) : (
+          profileBlog.map((blog) => <BlogCard key={blog._id} blog={blog} />)
+        )}
       </div>
     </div>
   );
