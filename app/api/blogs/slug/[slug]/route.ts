@@ -51,7 +51,11 @@ export async function PUT(req:NextRequest, { params }: { params: Promise<{ slug:
     const decoded = await verifyToken(req);
     const data = await req.json();
     
-    const blog = await Blog.findOne({ slug: slug  });
+    const blog = await Blog.findOne({ slug: slug, author: decoded?.id });
+
+    if(!blog) {
+      return ErrorHandler("Blog not found or you are not authorized to update this blog", 404);
+    }
     
     const updatedBlog = await Blog.findByIdAndUpdate(
       blog?._id,
