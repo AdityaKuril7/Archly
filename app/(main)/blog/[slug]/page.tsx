@@ -27,9 +27,7 @@ export default function BlogPage({
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
 
-  if (!blog) {
-    return <Loading />;
-  }
+
 
   const [userComment, setUserComment] = useState<string>("");
 
@@ -72,6 +70,10 @@ export default function BlogPage({
   useEffect(() => {
     fetchCurrentBlog();
   }, []);
+
+    if (!blog) {
+      return <Loading />;
+    }
 
   useEffect(() => {
     setViewerAlreadyFollow(
