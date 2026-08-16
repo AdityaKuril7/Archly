@@ -9,7 +9,7 @@ export default async function page({
   const { slug } = await params;
 
   return (
-    <div>
+    <div className="w-screen h-screen overflow-scroll">
       <EditBlog slug={slug} />
     </div>
   );
