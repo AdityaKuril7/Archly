@@ -4,16 +4,21 @@ import { Label } from "@/components/ui/label";
 import useAuthStore from "@/store/useAuthStore";
 import useBlogStore from "@/store/useBlogStore";
 import React, { useEffect, useState } from "react";
+import Loading from "../loading";
 
 const Library = () => {
   const { getUserId } = useAuthStore();
   const { savedBlogs, fetchLibrary } = useBlogStore();
+  const userId = getUserId();
 
   useEffect(() => {
-    const userId = getUserId();
     if (!userId) return;
     fetchLibrary(userId);
-  }, []);
+  }, [userId, fetchLibrary]);
+
+  if (!savedBlogs) {
+    return <Loading />;
+  }
 
   return (
     <div

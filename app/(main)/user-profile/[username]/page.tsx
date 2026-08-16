@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import EditProfileCard from "@/components/ui/EditProfileCard";
 import { ConnectionList } from "@/components/ui/ConnectionList";
 import Image from "next/image";
+import Loading from "../../loading";
 
 export default function Profile({
   params,
@@ -73,6 +74,10 @@ export default function Profile({
       setActiveTab(filter);
     }
   };
+
+  if (!profileUser) {
+    return <Loading />;
+  }
 
   return (
     <div className="h-200 w-240 justify-self-center flex flex-col overflow-scroll">

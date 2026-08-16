@@ -6,6 +6,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
 import TableRow from "@/components/ui/TableRow";
 import { toast, Toaster } from "sonner";
+import Loading from "../loading";
 
 const InfoCard = ({
   value,
@@ -57,6 +58,10 @@ const Dashboard = () => {
       fetchDashboardBlogs(username || "");
     }
   };
+
+  if (!blogs) {
+    return <Loading />;
+  }
 
   return (
     <div className="justify-self-center w-240 flex flex-col items-center ">
