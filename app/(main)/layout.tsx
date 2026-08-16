@@ -13,9 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     <div className="h-screen w-full flex flex-col overflow-hidden">
       <Navbar />
 
-      <div
-        className={`grid ${isSidebarOpen ? "grid-cols-2" : "grid-cols-3"} w-full h-full`}
-      >
+      <div className={`grid grid-cols-3 w-full h-full`}>
         <div className="justify-self-start">
           <AnimatePresence>{isSidebarOpen && <Sidebar />}</AnimatePresence>
         </div>
