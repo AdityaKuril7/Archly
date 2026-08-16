@@ -2,6 +2,7 @@
 import BlogCard from "@/components/ui/BlogCard";
 import { useEffect } from "react";
 import useBlogStore from "@/store/useBlogStore";
+import Loading from "./loading";
 
 export default function Home() {
   const { fetchAllBlogs, blogs } = useBlogStore();
@@ -9,6 +10,10 @@ export default function Home() {
   useEffect(() => {
     fetchAllBlogs();
   }, [fetchAllBlogs]);
+
+  if (!blogs) {
+    return <Loading />;
+  }
   return (
     <div
       className={
