@@ -131,7 +131,7 @@
 }
 
 *::-webkit-scrollbar {
-    @apply outline-none;
+    border: none;
 }
 
 .ql-container {

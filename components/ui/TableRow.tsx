@@ -9,6 +9,7 @@ import { Ellipsis } from "lucide-react";
 import { useDashboardStore } from "@/store/useDashboardStore";
 import { IBlogSchema } from "@/types/blog.types";
 import { useRouter } from "next/navigation";
+import { Label } from "./label";
 
 interface TableRowProps {
   blog: IBlogSchema;
@@ -30,9 +31,9 @@ export default function TableRow({
         className="px-6 py-4 cursor-pointer"
         onClick={() => router.push(`/blog/${blog.slug}`)}
       >
-        <p className="max-w-lg truncate text-sm text-muted-foreground cursor-pointer">
+        <Label className="max-w-lg truncate text-sm text-muted-foreground cursor-pointer">
           {blog.title}
-        </p>
+        </Label>
       </td>
 
       <td
@@ -60,6 +61,13 @@ export default function TableRow({
               {blog.status === "published"
                 ? "Draft This Blog"
                 : "Published This Blog"}
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              variant="default"
+              onClick={() => router.push(`/blog/${blog.slug}/edit-blog`)}
+            >
+              Edit
             </DropdownMenuItem>
 
             <DropdownMenuItem variant="destructive" onClick={onClickDelete}>

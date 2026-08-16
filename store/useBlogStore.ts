@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { AddBlogSchema, IBlogSchema } from "@/types/blog.types";
+import { AddBlogSchema, IBlogSchema, UpdateBlogSchema } from "@/types/blog.types";
 import { create } from "zustand";
 import useAuthStore from "./useAuthStore";
 
@@ -19,6 +19,7 @@ interface BlogStore {
   searchBlogs: (query: string) => void;
   fetchLibrary: (userId: string) => void;
   fetchUsersBlogs: (userId: string) => void;
+  updateBlog: (slug: string, data: UpdateBlogSchema) => Promise<boolean>;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
@@ -136,6 +137,17 @@ const useBlogStore = create<BlogStore>((set) => ({
       return false;
     }
   },
+  updateBlog: async (slug: string, data: UpdateBlogSchema) => {
+    try {
+      const response = await api.put(`/blogs/slug/${slug}`, data);
+      if (response.status === 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
 }));
 
 export default useBlogStore;

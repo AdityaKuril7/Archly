@@ -6,21 +6,20 @@ import { AnimatePresence } from "framer-motion";
 import Sidebar from "@/components/layout/Sidebar";
 import useUiStore from "@/store/useUiStore";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const { isSidebarOpen } = useUiStore();
 
   return (
     <div className="h-screen w-full flex flex-col overflow-hidden">
       <Navbar />
 
-      <div className="grid grid-cols-3 w-full h-full">
-        <div className="justify-self-start">
-          <AnimatePresence>{isSidebarOpen && <Sidebar />}</AnimatePresence>
-        </div>
-        {children}
+      <div className="flex w-full h-full overflow-hidden">
+        <AnimatePresence>{isSidebarOpen && <Sidebar />}</AnimatePresence>
+
+        <main className="flex-1 h-full overflow-y-auto">{children}</main>
       </div>
     </div>
   );
 };
 
-export default layout;
+export default Layout;

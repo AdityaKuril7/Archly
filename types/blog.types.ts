@@ -64,3 +64,10 @@ export interface AddBlogSchema {
   category: string;
   status: "draft" | "published";
 }
+
+export interface UpdateBlogSchema {
+  title?: string;
+  excerpt?: string;
+  content?: string;
+  category?: string;
+}

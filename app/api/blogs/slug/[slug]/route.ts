@@ -43,3 +43,30 @@ export async function GET(
     }
   }
 }
+
+export async function PUT(req:NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  try {
+    await connectDb();
+    const decoded = await verifyToken(req);
+    const data = await req.json();
+    
+    const blog = await Blog.findOne({ slug: slug  });
+    
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blog?._id,
+      { ...data },
+      { new: true },
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: "Blog updated successfully",
+      updatedBlog,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      return ErrorHandler(err.message, 401);
+    }
+  }
+}
