@@ -137,7 +137,7 @@ export default function EditBlog({ slug }: { slug: string }) {
           <Button
             onClick={handleDiscard}
             variant={"destructive"}
-            className={`rounded-md border px-5 py-2 ${loading && "bg-gray-400 cursor-not-allowed"}`}
+            className={`rounded-md border px-5 py-2 ${loading && "bg-red-400 cursor-not-allowed"}`}
           >
             Discard
           </Button>

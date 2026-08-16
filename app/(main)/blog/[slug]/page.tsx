@@ -11,6 +11,7 @@ import { toast, Toaster } from "sonner";
 import Link from "next/link";
 import CommentCard from "@/components/ui/CommentCard";
 import Image from "next/image";
+import Loading from "../../loading";
 
 export default function BlogPage({
   params,
@@ -25,6 +26,10 @@ export default function BlogPage({
   const [isThisUserProfile, setIsThisUserProfile] = useState<boolean>();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
+
+  if (!blog) {
+    return <Loading />;
+  }
 
   const [userComment, setUserComment] = useState<string>("");
 
