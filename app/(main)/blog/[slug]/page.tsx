@@ -27,8 +27,6 @@ export default function BlogPage({
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
 
-
-
   const [userComment, setUserComment] = useState<string>("");
 
   const handleFollowUser = async () => {
@@ -71,10 +69,6 @@ export default function BlogPage({
     fetchCurrentBlog();
   }, []);
 
-    if (!blog) {
-      return <Loading />;
-    }
-
   useEffect(() => {
     setViewerAlreadyFollow(
       blog?.author.followers.includes(getUserId() || "") || false,
@@ -84,6 +78,10 @@ export default function BlogPage({
 
     setIsThisUserProfile(authorId === userId);
   }, [blog]);
+
+  if (!blog) {
+    return <Loading />;
+  }
 
   return (
     <div
