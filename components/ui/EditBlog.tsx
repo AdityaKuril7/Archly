@@ -10,13 +10,17 @@ import { toast } from "sonner";
 
 export default function EditBlog({ slug }: { slug: string }) {
   const { fetchBlog, blog, updateBlog } = useBlogStore();
+  const [loading, setLoading] = useState(false);
 
   const handleUpdate = async () => {
+    setLoading(true);
     const success = await updateBlog(slug, formData);
     if (success) {
       toast.info("Blog updated successfully");
+      setLoading(false);
     } else {
       toast.error("Failed to update blog");
+      setLoading(false);
     }
   };
 
@@ -125,15 +129,15 @@ export default function EditBlog({ slug }: { slug: string }) {
         <div className="flex gap-3 md:col-span-2">
           <Button
             onClick={handleUpdate}
-            className="rounded-md px-5 py-2 text-white"
+            className={`rounded-md px-5 py-2 text-white ${loading && "bg-gray-400 cursor-not-allowed"}`}
           >
-            Update
+            {loading ? "Updating..." : "Update"}
           </Button>
 
           <Button
             onClick={handleDiscard}
             variant={"destructive"}
-            className="rounded-md border px-5 py-2"
+            className={`rounded-md border px-5 py-2 ${loading && "bg-gray-400 cursor-not-allowed"}`}
           >
             Discard
           </Button>
