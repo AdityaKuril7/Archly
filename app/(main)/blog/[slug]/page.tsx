@@ -24,6 +24,7 @@ export default function BlogPage({
   const { toggleFollowUser, uploadComment } = useSocialStore();
   const { getUserId, getUsername } = useAuthStore();
   const [isThisUserProfile, setIsThisUserProfile] = useState<boolean>();
+  const userId = getUserId();
   const [viewerAlreadyFollow, setViewerAlreadyFollow] =
     useState<boolean>(false);
 
@@ -47,7 +48,6 @@ export default function BlogPage({
     const { success, message } = await uploadComment(blog?._id, userComment);
     if (success) {
       toast.info(message);
-      const userId = getUserId();
       if (!userId) return;
       await fetchBlog(blog?.slug as string);
       setUserComment("");
@@ -55,9 +55,7 @@ export default function BlogPage({
   };
 
   const fetchCurrentBlog = async () => {
-    const userId = getUserId();
     if (!userId) return;
-
     const result = await fetchBlog(slug);
 
     if (!result) {
@@ -67,7 +65,7 @@ export default function BlogPage({
 
   useEffect(() => {
     fetchCurrentBlog();
-  }, []);
+  }, [userId, slug]);
 
   useEffect(() => {
     setViewerAlreadyFollow(
