@@ -6,6 +6,7 @@ import Editor from "@/components/ui/Editor";
 import { Label } from "./label";
 import { Toaster } from "./sonner";
 import { Button } from "./button";
+import { toast } from "sonner";
 
 export default function EditBlog({ slug }: { slug: string }) {
   const { fetchBlog, blog, updateBlog } = useBlogStore();
@@ -13,9 +14,9 @@ export default function EditBlog({ slug }: { slug: string }) {
   const handleUpdate = async () => {
     const success = await updateBlog(slug, formData);
     if (success) {
-      alert("Blog updated successfully");
+      toast.info("Blog updated successfully");
     } else {
-      alert("Failed to update blog");
+      toast.error("Failed to update blog");
     }
   };
 
