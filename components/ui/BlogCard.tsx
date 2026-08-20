@@ -52,7 +52,7 @@ export default function BlogCard({ blog }: { blog: IBlogSchema }) {
   };
 
   const handleLinkCopy = () => {
-    const link = `http://localhost:3000/blog/${blog.slug}`;
+    const link = `https://archly-blog.vercel.app/blog/${blog.slug}`;
     navigator.clipboard.writeText(link);
     toast.info("Link copied to clipboard");
   }
