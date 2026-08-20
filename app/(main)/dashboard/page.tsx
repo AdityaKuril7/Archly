@@ -69,7 +69,7 @@ const Dashboard = () => {
       <div className="w-full h-auto grid grid-cols-3 place-items-center gap-8 p-4">
         <InfoCard
           value={blogs?.length.toString() || "0"}
-          description="Total blgos"
+          description="Total Blogs"
         />
         <InfoCard
           value={totalLikes?.toString() || "0"}
